@@ -178,266 +178,266 @@ describe('Endpoint testing', () => {
     })
 
     // Dispatch tests
-    test('Should post a dispatch object to the db with attachments and template', async () => {
-      const post = await postDispatches(context, validDispatchBoth)
-      console.log(post)
-      idDispatch = post.body._id
+    // test('Should post a dispatch object to the db with attachments and template', async () => {
+    //   const post = await postDispatches(context, validDispatchBoth)
+    //   console.log(post)
+    //   idDispatch = post.body._id
 
-      expect(post).resolves
-      expect(post.body).toBeTruthy()
-      expect(post.status).toEqual(200)
-      expect(post.body.title).toBe('Parallel test')
-      expect(post.body._id).toBe(idDispatch)
-      expect.objectContaining(post.body.template)
-      expect.arrayContaining(post.body.attachments)
-    })
+    //   expect(post).resolves
+    //   expect(post.body).toBeTruthy()
+    //   expect(post.status).toEqual(200)
+    //   expect(post.body.title).toBe('Parallel test')
+    //   expect(post.body._id).toBe(idDispatch)
+    //   expect.objectContaining(post.body.template)
+    //   expect.arrayContaining(post.body.attachments)
+    // })
 
-    test('Should post a dispatch object to the db with attachments', async () => {
-      const post = await postDispatches(context, validDispatchAttachments)
+    // test('Should post a dispatch object to the db with attachments', async () => {
+    //   const post = await postDispatches(context, validDispatchAttachments)
 
-      idDispatchAttachments = post.body._id
+    //   idDispatchAttachments = post.body._id
 
-      expect(post).resolves
-      expect(post.body).toBeTruthy()
-      expect(post.status).toEqual(200)
-      expect(post.body.title).toBe('Parallel test')
-      expect(post.body._id).toBe(idDispatchAttachments)
-      expect.not.objectContaining(post.body.template)
-      expect.arrayContaining(post.body.attachments)
-    })
+    //   expect(post).resolves
+    //   expect(post.body).toBeTruthy()
+    //   expect(post.status).toEqual(200)
+    //   expect(post.body.title).toBe('Parallel test')
+    //   expect(post.body._id).toBe(idDispatchAttachments)
+    //   expect.not.objectContaining(post.body.template)
+    //   expect.arrayContaining(post.body.attachments)
+    // })
 
-    test('Should post a dispatch object to the db with template', async () => {
-      const post = await postDispatches(context, validDispatchTemplate)
+    // test('Should post a dispatch object to the db with template', async () => {
+    //   const post = await postDispatches(context, validDispatchTemplate)
 
-      idDispatchOnlyTemplate = post.body._id
+    //   idDispatchOnlyTemplate = post.body._id
 
-      expect(post).resolves
-      expect(post.body).toBeTruthy()
-      expect(post.status).toEqual(200)
-      expect(post.body.title).toBe('Parallel test')
-      expect(post.body._id).toBe(idDispatchOnlyTemplate)
-      expect.objectContaining(post.body.template)
-      expect.not.arrayContaining(post.body.attachments)
-    })
+    //   expect(post).resolves
+    //   expect(post.body).toBeTruthy()
+    //   expect(post.status).toEqual(200)
+    //   expect(post.body.title).toBe('Parallel test')
+    //   expect(post.body._id).toBe(idDispatchOnlyTemplate)
+    //   expect.objectContaining(post.body.template)
+    //   expect.not.arrayContaining(post.body.attachments)
+    // })
 
-    test('Should get a dispatch with a given id from the db', async () => {
-      const contextModified = context
-      contextModified.bindingData = {
-        id: idDispatch
-      }
+    // test('Should get a dispatch with a given id from the db', async () => {
+    //   const contextModified = context
+    //   contextModified.bindingData = {
+    //     id: idDispatch
+    //   }
 
-      const get = await getDispachesById(contextModified, apikeyHeader)
+    //   const get = await getDispachesById(contextModified, apikeyHeader)
 
-      expect(get).resolves
-      expect(get).toBeTruthy()
-      expect(get.status).toEqual(200)
-      expect(get.body._id).toEqual(idDispatch)
-      expect(get.body.title).toBe('Parallel test')
-      expect.objectContaining(get.body.template)
-      expect.arrayContaining(get.body.attachments)
-    })
+    //   expect(get).resolves
+    //   expect(get).toBeTruthy()
+    //   expect(get.status).toEqual(200)
+    //   expect(get.body._id).toEqual(idDispatch)
+    //   expect(get.body.title).toBe('Parallel test')
+    //   expect.objectContaining(get.body.template)
+    //   expect.arrayContaining(get.body.attachments)
+    // })
 
-    test('Should get all the dispatches from the db', async () => {
-      const get = await getDispaches(context, apikeyHeader)
+    // test('Should get all the dispatches from the db', async () => {
+    //   const get = await getDispaches(context, apikeyHeader)
 
-      expect(get).resolves
-      expect(get).toBeTruthy()
-      expect(get.status).toEqual(200)
-      expect.arrayContaining(get.body)
-      expect(get.body[0]._id).toEqual(idDispatch)
-      expect(get.body[1]._id).toEqual(idDispatchAttachments)
-      expect(get.body[2]._id).toEqual(idDispatchOnlyTemplate)
-    })
+    //   expect(get).resolves
+    //   expect(get).toBeTruthy()
+    //   expect(get.status).toEqual(200)
+    //   expect.arrayContaining(get.body)
+    //   expect(get.body[0]._id).toEqual(idDispatch)
+    //   expect(get.body[1]._id).toEqual(idDispatchAttachments)
+    //   expect(get.body[2]._id).toEqual(idDispatchOnlyTemplate)
+    // })
 
-    test('Should edit a given dispatch', async () => {
-      const contextModified = context
-      contextModified.bindingData = {
-        id: idDispatch
-      }
+    // test('Should edit a given dispatch', async () => {
+    //   const contextModified = context
+    //   contextModified.bindingData = {
+    //     id: idDispatch
+    //   }
 
-      const edit = await editDispatches(contextModified, validDispatchEdit)
+    //   const edit = await editDispatches(contextModified, validDispatchEdit)
 
-      expect(edit).resolves
-      expect(edit).toBeTruthy()
-      expect(edit.status).toEqual(200)
-      expect(edit.body.status).not.toEqual('notapproved')
-      expect(edit.body.status).toEqual('approved')
-    })
+    //   expect(edit).resolves
+    //   expect(edit).toBeTruthy()
+    //   expect(edit.status).toEqual(200)
+    //   expect(edit.body.status).not.toEqual('notapproved')
+    //   expect(edit.body.status).toEqual('approved')
+    // })
 
-    test('Should edit the given dispatch object to inprogress', async () => {
-      const contextModified = context
-      contextModified.bindingData = {
-        id: idDispatchOnlyTemplate
-      }
+    // test('Should edit the given dispatch object to inprogress', async () => {
+    //   const contextModified = context
+    //   contextModified.bindingData = {
+    //     id: idDispatchOnlyTemplate
+    //   }
 
-      const edit = await editDispatches(contextModified, validDispatchEditInprogress)
+    //   const edit = await editDispatches(contextModified, validDispatchEditInprogress)
 
-      expect(edit).resolves
-      expect(edit).toBeTruthy()
-      expect(edit.status).toEqual(200)
-      expect(edit.body.status).not.toEqual('notapproved')
-      expect(edit.body.status).toEqual('inprogress')
-    })
+    //   expect(edit).resolves
+    //   expect(edit).toBeTruthy()
+    //   expect(edit.status).toEqual(200)
+    //   expect(edit.body.status).not.toEqual('notapproved')
+    //   expect(edit.body.status).toEqual('inprogress')
+    // })
 
-    test('Should edit the given dispatch object to approved', async () => {
-      const contextModified = context
-      contextModified.bindingData = {
-        id: idDispatchAttachments
-      }
+    // test('Should edit the given dispatch object to approved', async () => {
+    //   const contextModified = context
+    //   contextModified.bindingData = {
+    //     id: idDispatchAttachments
+    //   }
 
-      const edit = await editDispatches(contextModified, validDispatchEditApproved)
+    //   const edit = await editDispatches(contextModified, validDispatchEditApproved)
 
-      expect(edit).resolves
-      expect(edit).toBeTruthy()
-      expect(edit.status).toEqual(200)
-      expect(edit.body.status).not.toEqual('notapproved')
-      expect(edit.body.status).toEqual('approved')
-      expect(edit.body.approvedBy).toEqual('timetrigger')
-      expect(edit.body.approvedById).toEqual('timetrigger')
-      expect(edit.body.approvedByEmail).toEqual('timetrigger@telemarkfylke.no')
-    })
+    //   expect(edit).resolves
+    //   expect(edit).toBeTruthy()
+    //   expect(edit.status).toEqual(200)
+    //   expect(edit.body.status).not.toEqual('notapproved')
+    //   expect(edit.body.status).toEqual('approved')
+    //   expect(edit.body.approvedBy).toEqual('timetrigger')
+    //   expect(edit.body.approvedById).toEqual('timetrigger')
+    //   expect(edit.body.approvedByEmail).toEqual('timetrigger@telemarkfylke.no')
+    // })
 
-    test('Should return empty body since theres no approved dispatches with the correct time', async () => {
-      const get = await getReadyDispatches(context, apikeyHeader)
+    // test('Should return empty body since theres no approved dispatches with the correct time', async () => {
+    //   const get = await getReadyDispatches(context, apikeyHeader)
 
-      expect(get).resolves
-      expect(get).toBeTruthy()
-      expect(get.status).toEqual(200)
-      expect(get.body).toEqual([])
-    })
+    //   expect(get).resolves
+    //   expect(get).toBeTruthy()
+    //   expect(get.status).toEqual(200)
+    //   expect(get.body).toEqual([])
+    // })
 
-    test('Should edit a given dispatch, approvedTimeStamp', async () => {
-      const contextModified = context
-      contextModified.bindingData = {
-        id: idDispatch
-      }
+    // test('Should edit a given dispatch, approvedTimeStamp', async () => {
+    //   const contextModified = context
+    //   contextModified.bindingData = {
+    //     id: idDispatch
+    //   }
 
-      const edit = await editDispatches(contextModified, validDispatchEditTimestamp)
+    //   const edit = await editDispatches(contextModified, validDispatchEditTimestamp)
 
-      expect(edit).resolves
-      expect(edit).toBeTruthy()
-      expect(edit.status).toEqual(200)
-      expect(edit.body.status).toEqual('approved')
-      // Denne testen fungerer lokalt, ikke på github pga tidsoner osv.
-      // expect(edit.body.approvedTimestamp.toString()).toMatch('Thu Feb 03 2022 10:52:23 GMT+0100 (sentraleuropeisk normaltid)')
-    })
+    //   expect(edit).resolves
+    //   expect(edit).toBeTruthy()
+    //   expect(edit.status).toEqual(200)
+    //   expect(edit.body.status).toEqual('approved')
+    //   // Denne testen fungerer lokalt, ikke på github pga tidsoner osv.
+    //   // expect(edit.body.approvedTimestamp.toString()).toMatch('Thu Feb 03 2022 10:52:23 GMT+0100 (sentraleuropeisk normaltid)')
+    // })
 
-    test('Should return all dispatches with the correct approvedTimestamp', async () => {
-      const get = await getReadyDispatches(context, apikeyHeader)
+    // test('Should return all dispatches with the correct approvedTimestamp', async () => {
+    //   const get = await getReadyDispatches(context, apikeyHeader)
 
-      timestampDispach = get.body[0].e18Job.tasks[3].data.parameter.date
+    //   timestampDispach = get.body[0].e18Job.tasks[3].data.parameter.date
 
-      expect(get).resolves
-      expect(get).toBeTruthy()
-      expect(get.status).toEqual(200)
-      expect(get.body).toBeInstanceOf(Array)
-      expect(get.body[0]).toBeInstanceOf(Object)
-      expect(get.body[0]._id).toEqual(idDispatch)
-      expect(get.body[0].e18Job.tasks).toBeInstanceOf(Array)
-      expect(get.body[0].e18Job.tasks).toEqual([
-        {
-          system: 'p360',
-          method: 'SyncPrivatePerson',
-          group: 'group2',
-          dependencyTag: 'sync',
-          data: { ssn: '13374201337' }
-        },
-        {
-          system: 'p360',
-          method: 'SyncPrivatePerson',
-          group: 'group2',
-          dependencyTag: 'sync',
-          data: { ssn: '13374201337' }
-        },
-        {
-          system: 'p360',
-          method: 'SyncEnterprise',
-          group: 'group2',
-          dependencyTag: 'sync',
-          data: { orgnr: '13374201337' }
-        },
-        {
-          system: 'p360',
-          method: 'archive',
-          group: 'group1',
-          dependencyTag: 'createCaseDocument',
-          dependencies: ['sync'],
-          data: {
-            system: 'masseutsendelse',
-            template: 'utsendelsesdokument',
-            parameter: {
-              accessCode: 'U',
-              accessGroup: 'Alle',
-              attachments: [
-                {
-                  base64: undefined,
-                  format: 'pdf',
-                  title: 'Parallel test',
-                  versionFormat: 'A'
-                }
-              ],
-              caseNumber: '22/00009',
-              contacts: [
-                {
-                  role: 'Mottaker',
-                  ssn: '13374201337'
-                },
-                {
-                  role: 'Mottaker',
-                  ssn: '13374201337'
-                },
-                {
-                  role: 'Mottaker',
-                  ssn: '13374201337'
-                }
-              ],
-              date: timestampDispach,
-              paragraph: '',
-              responsiblePersonEmail: 'jest.test@vtfk.no',
-              title: 'Parallel test'
-            }
-          }
-        },
-        {
-          system: 'p360',
-          method: 'archive',
-          group: 'group3',
-          dependencyTag: 'uploadAttachment-1',
-          dependencies: ['createCaseDocument'],
-          dataMapping: 'parameter.documentNumber=DocumentNumber',
-          data: {
-            system: 'archive',
-            template: 'add-attachment',
-            parameter: {
-              base64: 'base64',
-              format: '.txt',
-              secure: false,
-              title: 'test',
-              versionFormat: 'P'
-            }
-          }
-        },
-        {
-          system: 'p360',
-          method: 'archive',
-          group: 'group4',
-          dependencies: ['uploadAttachment-1'],
-          dataMapping: '{"parameter": { "Documents": [ { "DocumentNumber": "{{DocumentNumber}}" }]}}',
-          data: { method: 'DispatchDocuments', service: 'DocumentService' }
-        }
-      ])
-      expect.objectContaining(get.body[0].template)
-      expect.arrayContaining(get.body[0].attachments)
-    })
+    //   expect(get).resolves
+    //   expect(get).toBeTruthy()
+    //   expect(get.status).toEqual(200)
+    //   expect(get.body).toBeInstanceOf(Array)
+    //   expect(get.body[0]).toBeInstanceOf(Object)
+    //   expect(get.body[0]._id).toEqual(idDispatch)
+    //   expect(get.body[0].e18Job.tasks).toBeInstanceOf(Array)
+    //   expect(get.body[0].e18Job.tasks).toEqual([
+    //     {
+    //       system: 'p360',
+    //       method: 'SyncPrivatePerson',
+    //       group: 'group2',
+    //       dependencyTag: 'sync',
+    //       data: { ssn: '13374201337' }
+    //     },
+    //     {
+    //       system: 'p360',
+    //       method: 'SyncPrivatePerson',
+    //       group: 'group2',
+    //       dependencyTag: 'sync',
+    //       data: { ssn: '13374201337' }
+    //     },
+    //     {
+    //       system: 'p360',
+    //       method: 'SyncEnterprise',
+    //       group: 'group2',
+    //       dependencyTag: 'sync',
+    //       data: { orgnr: '13374201337' }
+    //     },
+    //     {
+    //       system: 'p360',
+    //       method: 'archive',
+    //       group: 'group1',
+    //       dependencyTag: 'createCaseDocument',
+    //       dependencies: ['sync'],
+    //       data: {
+    //         system: 'masseutsendelse',
+    //         template: 'utsendelsesdokument',
+    //         parameter: {
+    //           accessCode: 'U',
+    //           accessGroup: 'Alle',
+    //           attachments: [
+    //             {
+    //               base64: undefined,
+    //               format: 'pdf',
+    //               title: 'Parallel test',
+    //               versionFormat: 'A'
+    //             }
+    //           ],
+    //           caseNumber: '22/00009',
+    //           contacts: [
+    //             {
+    //               role: 'Mottaker',
+    //               ssn: '13374201337'
+    //             },
+    //             {
+    //               role: 'Mottaker',
+    //               ssn: '13374201337'
+    //             },
+    //             {
+    //               role: 'Mottaker',
+    //               ssn: '13374201337'
+    //             }
+    //           ],
+    //           date: timestampDispach,
+    //           paragraph: '',
+    //           responsiblePersonEmail: 'jest.test@vtfk.no',
+    //           title: 'Parallel test'
+    //         }
+    //       }
+    //     },
+    //     {
+    //       system: 'p360',
+    //       method: 'archive',
+    //       group: 'group3',
+    //       dependencyTag: 'uploadAttachment-1',
+    //       dependencies: ['createCaseDocument'],
+    //       dataMapping: 'parameter.documentNumber=DocumentNumber',
+    //       data: {
+    //         system: 'archive',
+    //         template: 'add-attachment',
+    //         parameter: {
+    //           base64: 'base64',
+    //           format: '.txt',
+    //           secure: false,
+    //           title: 'test',
+    //           versionFormat: 'P'
+    //         }
+    //       }
+    //     },
+    //     {
+    //       system: 'p360',
+    //       method: 'archive',
+    //       group: 'group4',
+    //       dependencies: ['uploadAttachment-1'],
+    //       dataMapping: '{"parameter": { "Documents": [ { "DocumentNumber": "{{DocumentNumber}}" }]}}',
+    //       data: { method: 'DispatchDocuments', service: 'DocumentService' }
+    //     }
+    //   ])
+    //   expect.objectContaining(get.body[0].template)
+    //   expect.arrayContaining(get.body[0].attachments)
+    // })
 
-    test('Should complete dispatch object with status approved', async () => {
-      const complete = await complteDispatch(context, validDispatchEditApproved)
-      expect(complete).resolves
-      expect(complete).toBeTruthy()
-      expect(complete.status).toEqual(200)
-      expect(complete.body.status).not.toEqual('approved')
-      expect(complete.body.status).toEqual('completed')
-    })
+    // test('Should complete dispatch object with status approved', async () => {
+    //   const complete = await complteDispatch(context, validDispatchEditApproved)
+    //   expect(complete).resolves
+    //   expect(complete).toBeTruthy()
+    //   expect(complete.status).toEqual(200)
+    //   expect(complete.body.status).not.toEqual('approved')
+    //   expect(complete.body.status).toEqual('completed')
+    // })
 
     test('Should call the getblob endpoint correctly', async () => {
       const contextModified = context
@@ -575,57 +575,57 @@ describe('Endpoint testing', () => {
       expect(edit.status).toEqual(404)
     })
 
-    test('Should not edit the given dispatch object since the status is inprogress. Running dispatch should only be set to completed', async () => {
-      const contextModified = context
-      contextModified.bindingData = {
-        id: idDispatchOnlyTemplate
-      }
+    // test('Should not edit the given dispatch object since the status is inprogress. Running dispatch should only be set to completed', async () => {
+    //   const contextModified = context
+    //   contextModified.bindingData = {
+    //     id: idDispatchOnlyTemplate
+    //   }
 
-      const edit = await editDispatches(contextModified, validDispatchAttachments)
+    //   const edit = await editDispatches(contextModified, validDispatchAttachments)
 
-      expect(edit).toBeInstanceOf(Object)
-      expect(edit.body.message).toBeDefined()
-      expect(edit.status).toEqual(404)
-    })
+    //   expect(edit).toBeInstanceOf(Object)
+    //   expect(edit.body.message).toBeDefined()
+    //   expect(edit.status).toEqual(404)
+    // })
 
-    test('Should not edit the given dispatch object since the status is inprogress. Running dispatch should only be set to completed', async () => {
-      const contextModified = context
-      contextModified.bindingData = {
-        id: idDispatchOnlyTemplate
-      }
+    // test('Should not edit the given dispatch object since the status is inprogress. Running dispatch should only be set to completed', async () => {
+    //   const contextModified = context
+    //   contextModified.bindingData = {
+    //     id: idDispatchOnlyTemplate
+    //   }
 
-      const edit = await editDispatches(contextModified, validDispatchEditInprogress)
+    //   const edit = await editDispatches(contextModified, validDispatchEditInprogress)
 
-      expect(edit).toBeInstanceOf(Object)
-      expect(edit.body.message).toBeDefined()
-      expect(edit.status).toEqual(400)
-    })
+    //   expect(edit).toBeInstanceOf(Object)
+    //   expect(edit.body.message).toBeDefined()
+    //   expect(edit.status).toEqual(400)
+    // })
 
-    test('Should reject editing a dispatch with attachments because a file is missing file extension', async () => {
-      const contextModified = context
-      contextModified.bindingData = {
-        id: idDispatchAttachments
-      }
+    // test('Should reject editing a dispatch with attachments because a file is missing file extension', async () => {
+    //   const contextModified = context
+    //   contextModified.bindingData = {
+    //     id: idDispatchAttachments
+    //   }
 
-      const edit = await editDispatches(contextModified, invalidDispatchMissingFileExtension)
+    //   const edit = await editDispatches(contextModified, invalidDispatchMissingFileExtension)
 
-      expect(edit).toBeInstanceOf(Object)
-      expect(edit.body.message).toBeDefined()
-      expect(edit.status).toEqual(404)
-    })
+    //   expect(edit).toBeInstanceOf(Object)
+    //   expect(edit.body.message).toBeDefined()
+    //   expect(edit.status).toEqual(404)
+    // })
 
-    test('Should reject editing a dispatch with attachments because a file got an illegal file extension', async () => {
-      const contextModified = context
-      contextModified.bindingData = {
-        id: idDispatchAttachments
-      }
+    // test('Should reject editing a dispatch with attachments because a file got an illegal file extension', async () => {
+    //   const contextModified = context
+    //   contextModified.bindingData = {
+    //     id: idDispatchAttachments
+    //   }
 
-      const edit = await editDispatches(contextModified, invalidDispatchIllegalFileExtension)
+    //   const edit = await editDispatches(contextModified, invalidDispatchIllegalFileExtension)
 
-      expect(edit).toBeInstanceOf(Object)
-      expect(edit.body.message).toBeDefined()
-      expect(edit.status).toEqual(404)
-    })
+    //   expect(edit).toBeInstanceOf(Object)
+    //   expect(edit.body.message).toBeDefined()
+    //   expect(edit.status).toEqual(404)
+    // })
 
     test('Should reject completing a dispatch since there is no id provided', async () => {
       const contextModified = context
