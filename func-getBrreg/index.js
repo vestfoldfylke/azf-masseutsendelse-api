@@ -1,5 +1,6 @@
 const { azfHandleResponse, azfHandleError } = require('@vtfk/responsehandlers')
 const axios = require('axios')
+const HTTPError = require('../sharedcode/vtfk-errors/httperror')
 
 module.exports = async function (context, req) {
   try {

@@ -27,11 +27,11 @@ API used to by masseutsendelse-web to communicate with various systems and APIs.
 | AZUREAD_CLIENTID | The Azure application id | 0e1e9f89-d80a-4e3b-b5be-5d8cd9a9ca5c |
 | AZUREAD_ALLOWEDGROUPS | Comma separated list of group object ids | bf9f0fb9-47c8-474d-be11-354a41a9f16f, b519ee09-6259-4459-8ead-a3e7afaaf018 |
 | APIKEYS | Any API key(s) you want to be valid | APIKey |
-| VTFK_MATRIKKELPROXY_BASEURL | The baseurl for the MatrikkelProxyAPI | https://**[url]**:**[port]**/ (Must end with slash) |
-| VTFK_MATRIKKELPROXY_APIKEY | The APIKey for connecting to the MatrikkelProxyAPI | APIKey |
-| VTFK_PDFGENERATOR_ENDPOINT | The endpoint url for azf-pdfgenerator v2 endpoint
-| VTFK_P360_ARCHIVE_ENDPOINT | VTFK azf-archive endpoint | https://[FQDN]/archive/v1/
-| VTFK_P360_ARCHIVE_SUBSCRIPTION_KEY | APIM subscription key | [GUID]
+| MATRIKKEL_BASEURL | The baseurl for the MatrikkelProxyAPI | https://**[url]**:**[port]**/ (Must end with slash) |
+| MATRIKKEL_KEY | The APIKey for connecting to the MatrikkelProxyAPI | APIKey |
+| PDFGENERATOR_ENDPOINT | The endpoint url for azf-pdfgenerator v2 endpoint
+| ARCHIVE_ARCHIVE_ENDPOINT | VTFK azf-archive endpoint | https://[FQDN]/archive/v1/
+| ARCHIVE_ARCHIVE_SUBSCRIPTION_KEY | APIM subscription key | [GUID]
 | PAPERTRAIL_HOST | URL to the papertrail log | papertrail.example.com/v1/log |
 | PAPERTRAIL_TOKEN | Token to the papertrail log | TOKEN |
 

@@ -1,4 +1,4 @@
-const config = require('../../config')
+const { MS } = require('../../config')
 const axios = require('axios').default
 
 const alertTeams = async (error, color, failedTask, completedJob, jobId, endpoint) => {
@@ -45,7 +45,7 @@ const alertTeams = async (error, color, failedTask, completedJob, jobId, endpoin
     }]
   }
   const headers = { contentType: 'application/vnd.microsoft.teams.card.o365connector' }
-  await axios.post(config.TEAMS_WEBHOOK_URL, teamsMsg, { headers })
+  await axios.post(MS.TEAMS_WEBHOOK_URL, teamsMsg, { headers })
 }
 
 module.exports = {

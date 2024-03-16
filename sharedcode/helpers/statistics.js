@@ -1,15 +1,15 @@
 /*
   Import dependencies
 */
-const config = require('../../config')
+const { STATISTICS } = require('../../config')
 const axios = require('axios')
 const createStatistics = async (department, id, privatepersons, enterprises) => {
   // Build the request
   const request = {
     method: 'post',
-    url: config.VTFK_STATISTICS_URL + '/stats',
+    url: STATISTICS.STATISTICS_URL + '/stats',
     headers: {
-      'Ocp-Apim-Subscription-Key': config.VTFK_STATISTICS_KEY
+      'x-functions-key': STATISTICS.STATISTICS_KEY
     },
     data: {
       system: 'Masseutsendelse',

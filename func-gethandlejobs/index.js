@@ -3,20 +3,14 @@ const Jobs = require('../sharedcode/models/jobs.js')
 const Dispatches = require('../sharedcode/models/dispatches.js')
 
 const getDb = require('../sharedcode/connections/masseutsendelseDB.js')
-const { logger, logConfig } = require('@vtfk/logger')
-const { syncRecipient, createCaseDocument, addAttachment, dispatchDocuments } = require('../sharedcode/vtfk/archive.js')
-const { createStatistics } = require('../sharedcode/vtfk/statistics.js')
+const { logger } = require('@vtfk/logger')
+const { syncRecipient, createCaseDocument, addAttachment, dispatchDocuments } = require('../sharedcode/helpers/archive.js')
+const { createStatistics } = require('../sharedcode/helpers/statistics.js')
 const { azfHandleResponse, azfHandleError } = require('@vtfk/responsehandlers')
-const { alertTeams } = require('../sharedcode/vtfk/alertTeams.js')
-
-logConfig({
-  prefix: 'azf-masseutsendelse-api - gethandlejobs'
-})
+const { alertTeams } = require('../sharedcode/helpers/alertTeams.js')
 
 module.exports = async function (context, req) {
   try {
-    // logger('info', 'Checking AUTH')
-    // await require('../sharedcode/auth/auth.js').auth(req)
     // Await the DB connection
     logger('info', 'Connecting to DB')
     await getDb()
@@ -131,7 +125,7 @@ module.exports = async function (context, req) {
                   const update = {
                     'status.syncRecipients': 'failed'
                   }
-                  updatedDispatch = await Jobs.findOneAndUpdate(filter, update, {
+                  await Jobs.findOneAndUpdate(filter, update, {
                     new: true
                   })
                 }
@@ -183,7 +177,7 @@ module.exports = async function (context, req) {
               'tasks.syncRecipients': updatedTask
             }
             logger('info', `Updating the job with the id: ${jobId}`)
-            updatedDispatch = await Jobs.findOneAndUpdate(filter, update, {
+            await Jobs.findOneAndUpdate(filter, update, {
               new: true
             })
           } catch (error) {
@@ -303,18 +297,18 @@ module.exports = async function (context, req) {
 
               // NB! Ikke gå videre før attachemnt 0 er lagt til! Dette blir hoveddokumentet
               logger('info', 'Checking if the first attachment is added')
-                if (currentTasks[0].status === 'completed') {
+              if (currentTasks[0].status === 'completed') {
                 logger('info', 'The first attachment is added, handling the rest')
-                    if (currentTasks[currentTaskIndex]?.status) {
-                        if (currentTasks[currentTaskIndex].status !== 'completed') {
-                            currentTasks[currentTaskIndex].status = 'inprogress'
-                        }
-                    } else {
-                        currentTasks[currentTaskIndex].status = 'inprogress'
-                    }
-                } else {
+                if (currentTasks[currentTaskIndex]?.status) {
+                  if (currentTasks[currentTaskIndex].status !== 'completed') {
                     currentTasks[currentTaskIndex].status = 'inprogress'
+                  }
+                } else {
+                  currentTasks[currentTaskIndex].status = 'inprogress'
                 }
+              } else {
+                currentTasks[currentTaskIndex].status = 'inprogress'
+              }
               if (currentTasks[currentTaskIndex].status === 'inprogress') {
                 logger('info', 'Adding attachment')
                 const addedAttachment = await addAttachment(
@@ -479,8 +473,13 @@ module.exports = async function (context, req) {
               logger('info', 'Failed pushing statistics to the DB')
               const filter = { _id: jobId }
               const update = {
-                'status.issueDispatch': issueDispatchCopy[0].retry >= 7 ? 'failed' : 'waiting',
-                'tasks.issueDispatch': issueDispatchCopy
+                'status.createStatistics': 'failed',
+                'tasks.createStatistics': [{
+                  status: 'failed',
+                  privatepersons,
+                  enterprises,
+                  response: statRes
+                }]
               }
               logger('info', 'Updating the job')
               await Jobs.findOneAndUpdate(filter, update, {
@@ -500,7 +499,7 @@ module.exports = async function (context, req) {
     }
     return await azfHandleResponse(taskArr, context, req)
   } catch (error) {
-    logger('error', `The job with the job id: ${jobId} failed`)
+    logger('error', 'Something went really wrong')
     return await azfHandleError(error, context, req)
   }
 }

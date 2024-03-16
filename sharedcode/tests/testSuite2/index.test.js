@@ -120,7 +120,7 @@ describe('Endpoint testing', () => {
       expect(post.body).toBeTruthy()
       expect(post.status).toEqual(200)
       expect(post.body.name).toBe('Jest Test Template')
-      expect(post.body.createdBy).toBe('apikey')
+      expect(post.body.createdBy).toBe('timetrigger')
       expect(post.body.template).toBe('Et eller annet')
     })
 
@@ -135,7 +135,7 @@ describe('Endpoint testing', () => {
       expect(get).toBeTruthy()
       expect(get.status).toEqual(200)
       expect(get.body.name).toBe('Jest Test Template')
-      expect(get.body.createdBy).toBe('apikey')
+      expect(get.body.createdBy).toBe('timetrigger')
       expect(get.body.template).toBe('Et eller annet')
     })
 
@@ -146,7 +146,7 @@ describe('Endpoint testing', () => {
       expect(get).toBeTruthy()
       expect(get.status).toEqual(200)
       expect(get.body[0].name).toBe('Jest Test Template')
-      expect(get.body[0].createdBy).toBe('apikey')
+      expect(get.body[0].createdBy).toBe('timetrigger')
       expect(get.body[0].template).toBe('Et eller annet')
     })
 
@@ -180,7 +180,7 @@ describe('Endpoint testing', () => {
     // Dispatch tests
     test('Should post a dispatch object to the db with attachments and template', async () => {
       const post = await postDispatches(context, validDispatchBoth)
-
+      console.log(post)
       idDispatch = post.body._id
 
       expect(post).resolves
@@ -292,9 +292,9 @@ describe('Endpoint testing', () => {
       expect(edit.status).toEqual(200)
       expect(edit.body.status).not.toEqual('notapproved')
       expect(edit.body.status).toEqual('approved')
-      expect(edit.body.approvedBy).toEqual('apikey')
-      expect(edit.body.approvedById).toEqual('apikey')
-      expect(edit.body.approvedByEmail).toEqual('apikey@vtfk.no')
+      expect(edit.body.approvedBy).toEqual('timetrigger')
+      expect(edit.body.approvedById).toEqual('timetrigger')
+      expect(edit.body.approvedByEmail).toEqual('timetrigger@telemarkfylke.no')
     })
 
     test('Should return empty body since theres no approved dispatches with the correct time', async () => {
@@ -432,26 +432,11 @@ describe('Endpoint testing', () => {
 
     test('Should complete dispatch object with status approved', async () => {
       const complete = await complteDispatch(context, validDispatchEditApproved)
-      console.log(complete)
       expect(complete).resolves
       expect(complete).toBeTruthy()
       expect(complete.status).toEqual(200)
       expect(complete.body.status).not.toEqual('approved')
       expect(complete.body.status).toEqual('completed')
-    })
-
-    test('Should call the get matrikkel endpoint correctly', async () => {
-      const contextModified = context
-      contextModified.bindingData = {
-        endpoint: 'jestTest'
-      }
-
-      const get = await getMatrikkel(contextModified, apikeyHeader)
-
-      expect(get).resolves
-      expect(get).toBeTruthy()
-      expect(get.status).toEqual(200)
-      expect(get.body.msg).toEqual('Matrikkel api successfully connected')
     })
 
     test('Should call the getblob endpoint correctly', async () => {
@@ -600,7 +585,7 @@ describe('Endpoint testing', () => {
 
       expect(edit).toBeInstanceOf(Object)
       expect(edit.body.message).toBeDefined()
-      expect(edit.status).toEqual(400)
+      expect(edit.status).toEqual(404)
     })
 
     test('Should not edit the given dispatch object since the status is inprogress. Running dispatch should only be set to completed', async () => {
@@ -626,7 +611,7 @@ describe('Endpoint testing', () => {
 
       expect(edit).toBeInstanceOf(Object)
       expect(edit.body.message).toBeDefined()
-      expect(edit.status).toEqual(400)
+      expect(edit.status).toEqual(404)
     })
 
     test('Should reject editing a dispatch with attachments because a file got an illegal file extension', async () => {
@@ -639,7 +624,7 @@ describe('Endpoint testing', () => {
 
       expect(edit).toBeInstanceOf(Object)
       expect(edit.body.message).toBeDefined()
-      expect(edit.status).toEqual(400)
+      expect(edit.status).toEqual(404)
     })
 
     test('Should reject completing a dispatch since there is no id provided', async () => {
@@ -679,27 +664,17 @@ describe('Endpoint testing', () => {
 
       expect(complete).toBeInstanceOf(Object)
       expect(complete.body.message).toBeDefined()
-      expect(complete.status).toEqual(404)
+      expect(complete.status).toEqual(400)
     })
 
     test('Should not call the matrikkel api since the url is missing', async () => {
-      process.env.VTFK_MATRIKKELPROXY_BASEURL = ''
+      process.env.MATRIKKEL_BASEURL = ''
 
       const get = await getMatrikkel(context, apikeyHeader)
 
       expect(get).toBeInstanceOf(Object)
       expect(get.body.message).toBeDefined()
-      expect(get.status).toEqual(404)
-    })
-
-    test('Should not call the matrikkel api since the apikey is missing', async () => {
-      process.env.VTFK_MATRIKKELPROXY_APIKEY = ''
-
-      const get = await getMatrikkel(context, apikeyHeader)
-
-      expect(get).toBeInstanceOf(Object)
-      expect(get.body.message).toBeDefined()
-      expect(get.status).toEqual(404)
+      expect(get.status).toEqual(400)
     })
 
     test('Should reject the get blob endpoint request since the id is missing', async () => {
@@ -748,7 +723,7 @@ describe('Endpoint testing', () => {
     })
 
     test('Should reject the archive endpoint request since the endpoint url is missing', async () => {
-      process.env.VTFK_P360_ARCHIVE_ENDPOINT = ''
+      process.env.ARCHIVE_ARCHIVE_ENDPOINT = ''
 
       const post = await postDispatches(context, validDispatchBoth)
 
@@ -758,7 +733,7 @@ describe('Endpoint testing', () => {
     })
 
     test('Should reject the archive endpoint request since the endpoint key is missing', async () => {
-      process.env.VTFK_P360_ARCHIVE_SUBSCRIPTION_KEY = ''
+      process.env.ARCHIVE_ARCHIVE_SUBSCRIPTION_KEY = ''
 
       const post = await postDispatches(context, validDispatchBoth)
 

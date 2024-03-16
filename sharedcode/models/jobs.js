@@ -1,22 +1,22 @@
 const mongoose = require('mongoose')
 
 // Tasks
-const tasksSchema = new mongoose.Schema({
-  method: {
-    type: String,
-    required: true
-  },
-  status: {
-    type: String,
-    default: 'waiting',
-    enum: ['waiting', 'inprogress', 'completed', 'failed'],
-    required: true
-  },
-  ssn: {
-    type: String,
-    required: true
-  }
-}, { _id: false })
+// const tasksSchema = new mongoose.Schema({
+//   method: {
+//     type: String,
+//     required: true
+//   },
+//   status: {
+//     type: String,
+//     default: 'waiting',
+//     enum: ['waiting', 'inprogress', 'completed', 'failed'],
+//     required: true
+//   },
+//   ssn: {
+//     type: String,
+//     required: true
+//   }
+// }, { _id: false })
 
 const jobsSchema = new mongoose.Schema({
   title: {

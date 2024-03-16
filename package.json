@@ -17,7 +17,8 @@
     "azure-ad-verify-token": "1.1.2",
     "dayjs": "1.10.8",
     "express": "4.17.3",
-    "mongoose": "6.1.8"
+    "mongoose": "6.1.8",
+    "node-cache": "^5.1.2"
   },
   "devDependencies": {
     "jest": "27.5.1",
@@ -28,5 +29,10 @@
     "mongodbMemoryServer": {
       "version": "4.2.6"
     }
+  },
+  "standard": {
+    "ignore": [
+      "/sharedcode/tests"
+    ]
   }
 }

@@ -5,7 +5,7 @@ const { ObjectID } = require('mongodb')
 const HTTPError = require('../sharedcode/vtfk-errors/httperror.js')
 const validate = require('../sharedcode/validators/dispatches').validate
 const blobClient = require('@vtfk/azure-blob-client')
-const config = require('../config')
+const { STORAGE } = require('../config')
 const { azfHandleResponse, azfHandleError } = require('@vtfk/responsehandlers')
 
 module.exports = async function (context, req) {
@@ -39,6 +39,7 @@ module.exports = async function (context, req) {
 
     // Check if the attachments contains any invalid characters
     if (process.env.NODE_ENV === 'test') {
+      // For the jest testing
       console.log('This is a test, uploading to blob is skipped. Any code inside the else statement will not be tested!')
       if (req.body.attachments && Array.isArray(req.body.attachments) && req.body.attachments.length > 0) {
         if (!process.env.AZURE_BLOB_CONNECTIONSTRING_TEST || !process.env.AZURE_BLOB_CONTAINERNAME_TEST) {
@@ -52,7 +53,7 @@ module.exports = async function (context, req) {
       }
     } else {
       if (req.body.attachments && Array.isArray(req.body.attachments) && req.body.attachments.length > 0) {
-        if (!config.AZURE_BLOB_CONNECTIONSTRING || !config.AZURE_BLOB_CONTAINERNAME) {
+        if (!STORAGE.AZURE_BLOB_CONNECTIONSTRING || !STORAGE.AZURE_BLOB_CONTAINERNAME) {
           throw new HTTPError(500, 'Cannot upload attachments when azure blob storage is not configured')
         }
         for (const blob of req.body.attachments) {

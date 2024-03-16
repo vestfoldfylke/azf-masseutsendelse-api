@@ -3,17 +3,14 @@ const Jobs = require('../sharedcode/models/jobs.js')
 const Dispatches = require('../sharedcode/models/dispatches.js')
 
 const getDb = require('../sharedcode/connections/masseutsendelseDB.js')
-const { logger, logConfig } = require('@vtfk/logger')
-const { syncRecipient, createCaseDocument, addAttachment, dispatchDocuments } = require('../sharedcode/vtfk/archive.js')
-const { createStatistics } = require('../sharedcode/vtfk/statistics.js')
+const { logger } = require('@vtfk/logger')
+const { syncRecipient, createCaseDocument, addAttachment, dispatchDocuments } = require('../sharedcode/helpers/archive.js')
+const { createStatistics } = require('../sharedcode/helpers/statistics.js')
 const { azfHandleResponse, azfHandleError } = require('@vtfk/responsehandlers')
-const { alertTeams } = require('../sharedcode/vtfk/alertTeams.js')
-
-logConfig({
-  prefix: 'azf-masseutsendelse-api - gethandlejobs'
-})
+const { alertTeams } = require('../sharedcode/helpers/alertTeams.js')
 
 module.exports = async function (context, req) {
+  let jobId
   try {
     logger('info', 'Checking AUTH')
     await require('../sharedcode/auth/auth.js').auth(req)
@@ -48,7 +45,7 @@ module.exports = async function (context, req) {
     const failedJobsArr = []
     let stopHandling = false
 
-    const jobId = jobs._id
+    jobId = jobs._id
     logger('info', `Found a job with id: ${jobId}`)
     logger('info', 'Checking the job status')
     for (const job in jobs.status) {
@@ -131,7 +128,7 @@ module.exports = async function (context, req) {
                   const update = {
                     'status.syncRecipients': 'failed'
                   }
-                  updatedDispatch = await Jobs.findOneAndUpdate(filter, update, {
+                  await Jobs.findOneAndUpdate(filter, update, {
                     new: true
                   })
                 }
@@ -183,7 +180,7 @@ module.exports = async function (context, req) {
               'tasks.syncRecipients': updatedTask
             }
             logger('info', `Updating the job with the id: ${jobId}`)
-            updatedDispatch = await Jobs.findOneAndUpdate(filter, update, {
+            await Jobs.findOneAndUpdate(filter, update, {
               new: true
             })
           } catch (error) {
@@ -303,18 +300,18 @@ module.exports = async function (context, req) {
 
               // NB! Ikke gå videre før attachemnt 0 er lagt til! Dette blir hoveddokumentet
               logger('info', 'Checking if the first attachment is added')
-                if (currentTasks[0].status === 'completed') {
+              if (currentTasks[0].status === 'completed') {
                 logger('info', 'The first attachment is added, handling the rest')
-                    if (currentTasks[currentTaskIndex]?.status) {
-                        if (currentTasks[currentTaskIndex].status !== 'completed') {
-                            currentTasks[currentTaskIndex].status = 'inprogress'
-                        }
-                    } else {
-                        currentTasks[currentTaskIndex].status = 'inprogress'
-                    }
-                } else {
+                if (currentTasks[currentTaskIndex]?.status) {
+                  if (currentTasks[currentTaskIndex].status !== 'completed') {
                     currentTasks[currentTaskIndex].status = 'inprogress'
+                  }
+                } else {
+                  currentTasks[currentTaskIndex].status = 'inprogress'
                 }
+              } else {
+                currentTasks[currentTaskIndex].status = 'inprogress'
+              }
               if (currentTasks[currentTaskIndex].status === 'inprogress') {
                 logger('info', 'Adding attachment')
                 const addedAttachment = await addAttachment(
@@ -350,6 +347,7 @@ module.exports = async function (context, req) {
               'status.uploadAttachments': attachments.length === completedTasks ? 'completed' : 'inprogress',
               'tasks.uploadAttachments': attachments
             }
+            logger('info', 'Finding the job and updating the job')
             await Jobs.findOneAndUpdate(filter, update, {
               new: true
             })
@@ -357,7 +355,7 @@ module.exports = async function (context, req) {
           } catch (error) {
             currentTasks[currentTaskIndex].status = 'failed'
             currentTasks[currentTaskIndex].retry ? currentTasks[currentTaskIndex].retry += 1 : currentTasks[currentTaskIndex].retry = 1
-            currentTasks[currentTaskIndex].error = error?.response?.data ? { ...error.response.data } : error
+            currentTasks[currentTaskIndex].error = { ...error }
 
             if (currentTasks[currentTaskIndex].retry === 7) {
               const filter = { _id: jobId }
@@ -378,7 +376,7 @@ module.exports = async function (context, req) {
               })
             }
             logger('error', `Failed pushing the job: ${job} with mongoDB id: ${jobId} to mongoDB!`)
-            await alertTeams(error?.response?.data ? JSON.stringify({ ...error.response.data }) : JSON.stringify(error), 'error', 'uploadAttachments', [], jobId, context.executionContext.functionName)
+            await alertTeams(JSON.stringify(...error), 'error', 'uploadAttachments', [], jobId, context.executionContext.functionName)
           }
         } else if (jobToHandle === 'issueDispatch') {
           let currentTasks = Object.values(taskArr[0])
@@ -479,8 +477,13 @@ module.exports = async function (context, req) {
               logger('info', 'Failed pushing statistics to the DB')
               const filter = { _id: jobId }
               const update = {
-                'status.issueDispatch': issueDispatchCopy[0].retry >= 7 ? 'failed' : 'waiting',
-                'tasks.issueDispatch': issueDispatchCopy
+                'status.createStatistics': 'failed',
+                'tasks.createStatistics': [{
+                  status: 'failed',
+                  privatepersons,
+                  enterprises,
+                  response: statRes
+                }]
               }
               logger('info', 'Updating the job')
               await Jobs.findOneAndUpdate(filter, update, {

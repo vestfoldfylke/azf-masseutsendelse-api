@@ -1,10 +1,7 @@
 /*
   Import dependencies
 */
-const apikey = require('./lib/apikey')
 const azuread = require('./lib/azuread')
-const HTTPError = require('../vtfk-errors/httperror')
-
 /*
   Auth function
 */
@@ -19,16 +16,14 @@ async function auth (req) {
     const token = await azuread(req.headers.authorization)
     if (token && token.name) requestor.name = token.name
     if (token && token.oid) requestor.id = token.oid
+    // Department is fetched with graph, not from access or id token from auth process.
     if (token && token.department) requestor.department = token.department
     if (token && token.upn) requestor.email = token.upn
-  } else if (req.headers['x-api-key']) {
-    apikey(req.headers['x-api-key'])
-    requestor.name = 'apikey'
-    requestor.id = 'apikey'
-    requestor.department = 'apikey'
-    requestor.email = 'apikey@vtfk.no'
   } else {
-    throw new HTTPError(401, 'No authentication token provided')
+    requestor.name = 'timetrigger'
+    requestor.id = 'timetrigger'
+    requestor.department = 'timetrigger'
+    requestor.email = 'timetrigger@telemarkfylke.no'
   }
   return requestor
 }

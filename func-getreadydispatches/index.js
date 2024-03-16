@@ -6,7 +6,9 @@ const axios = require('axios')
 const config = require('../config')
 const dayjs = require('dayjs')
 const { azfHandleResponse, azfHandleError } = require('@vtfk/responsehandlers')
-
+/*
+  Might delete later ;)
+*/
 // Arrays
 let e18Jobs = []
 // Clear the e18Jobs Array
@@ -60,8 +62,11 @@ module.exports = async function (context, req) {
         }
 
         const generatePDFRequest = {
-          url: config.VTFK_PDFGENERATOR_ENDPOINT,
+          url: config.PDFGENERATOR_ENDPOINT,
           method: 'post',
+          headers: {
+            'x-functions-key': config.PDFGENERATOR_X_FUNCTIONS_KEY
+          },
           data: {
             template: dispatch.template.template,
             documentDefinitionId: dispatch.template.documentDefinitionId || 'brevmal',

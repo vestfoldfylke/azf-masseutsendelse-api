@@ -3,16 +3,12 @@ const Dispatches = require('../sharedcode/models/dispatches.js')
 const getDb = require('../sharedcode/connections/masseutsendelseDB.js')
 const HTTPError = require('../sharedcode/vtfk-errors/httperror.js')
 const blobClient = require('@vtfk/azure-blob-client')
-const { logger, logConfig } = require('@vtfk/logger')
-const { alertTeams } = require('../sharedcode/vtfk/alertTeams.js')
+const { logger } = require('@vtfk/logger')
+const { alertTeams } = require('../sharedcode/helpers/alertTeams.js')
 const axios = require('axios')
-const config = require('../config.js')
+const { MISC, PDFGENERATOR } = require('../config.js')
 const dayjs = require('dayjs')
 const { azfHandleResponse, azfHandleError } = require('@vtfk/responsehandlers')
-
-logConfig({
-  prefix: 'azf-masseutsendelse-api - getreadydispatchesV2'
-})
 
 module.exports = async function (context, req) {
   try {
@@ -20,9 +16,6 @@ module.exports = async function (context, req) {
     let dispatchJobs = []
     // Clear the dispatchJobs Array
     dispatchJobs = []
-    // Authentication / Authorization
-    logger('info', 'Checking AUTH')
-    await require('../sharedcode/auth/auth.js').auth(req)
 
     // Await the DB connection
     logger('info', 'Connecting to DB')
@@ -48,8 +41,9 @@ module.exports = async function (context, req) {
       // Check if the dispatch has passed the registration threshold
       const registrationThreshold = dayjs(dispatch.approvedTimestamp).set('hour', 23).set('minute', 59).set('second', 59).set('millisecond', 0)
       const delaySendUntil = dayjs().set('hour', 11).set('minute', 0).set('second', 0).set('millisecond', 0)
-      if (!config.BYPASS_REGISTRATION_THRESHOLD) {
-        logger('info', 'Buypassing registartion threshold')
+      // If true, registration threshold check will be skipped and jobs will be created.
+      if (!MISC.BYPASS_REGISTRATION_THRESHOLD) {
+        logger('info', 'Checking registartion threshold, will create jobs if it is passed.')
         if (dayjs(new Date()).isBefore(registrationThreshold)) continue
       }
       // Variables
@@ -88,8 +82,11 @@ module.exports = async function (context, req) {
         }
         logger('info', 'Creating the request')
         const generatePDFRequest = {
-          url: config.VTFK_PDFGENERATOR_ENDPOINT,
+          url: PDFGENERATOR.PDFGENERATOR_ENDPOINT,
           method: 'post',
+          headers: {
+            'x-functions-key': PDFGENERATOR.PDFGENERATOR_X_FUNCTIONS_KEY
+          },
           data: {
             template: dispatch.template.template,
             documentDefinitionId: dispatch.template.documentDefinitionId || 'brevmal',
@@ -225,14 +222,14 @@ module.exports = async function (context, req) {
     }
     let updatedDispatch = {}
     if (dispatchJobs.length > 0) {
-      logger('info', `Creating a new job and saving it to the Jobs collection`)
+      logger('info', 'Creating a new job and saving it to the Jobs collection')
       const job = new Jobs(...dispatchJobs)
       // Save the new dispatch to the database
       await job.save()
       logger('info', `Successfully saved the job to the Jobs collection with the id: ${job._id}`)
       // Set dispatch to completed and wipe data that is not needed.
-      filter = { _id: job._id }
-      update = {
+      const filter = { _id: job._id }
+      const update = {
         status: 'completed',
         owners: [],
         excludedOwners: [],
