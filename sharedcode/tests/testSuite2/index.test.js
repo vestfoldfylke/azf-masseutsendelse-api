@@ -1,128 +1,128 @@
-// // Endpoints
-// const postTemplate = require('../../../func-posttemplate/index')
-// const getTemplateById = require('../../../func-gettemplatesbyid/index')
-// const getTemplates = require('../../../func-gettemplates/index')
-// const editTemplate = require('../../../func-puttemplates/index')
-// const postDispatches = require('../../../func-postdispatches/index')
-// const getDispachesById = require('../../../func-getdispatchesbyid/index')
-// const getDispaches = require('../../../func-getdispatches/index')
-// const editDispatches = require('../../../func-editdispatches/index')
-// const getReadyDispatches = require('../../../func-getreadydispatches/index')
-// const complteDispatch = require('../../../func-completedispatch/index')
-// const getMatrikkel = require('../../../func-getmatrikkel/index')
-// const getBlob = require('../../../func-getblob')
+// Endpoints
+const postTemplate = require('../../../func-posttemplate/index')
+const getTemplateById = require('../../../func-gettemplatesbyid/index')
+const getTemplates = require('../../../func-gettemplates/index')
+const editTemplate = require('../../../func-puttemplates/index')
+const postDispatches = require('../../../func-postdispatches/index')
+const getDispachesById = require('../../../func-getdispatchesbyid/index')
+const getDispaches = require('../../../func-getdispatches/index')
+const editDispatches = require('../../../func-editdispatches/index')
+const getReadyDispatches = require('../../../func-getreadydispatches/index')
+const complteDispatch = require('../../../func-completedispatch/index')
+const getMatrikkel = require('../../../func-getmatrikkel/index')
+const getBlob = require('../../../func-getblob')
 
-// // Valid test cases
-// const validTemplate = require('../testCases/validCases/post_template')
-// const validDispatchBoth = require('../testCases/validCases/post_dispatch_both')
-// const validDispatchAttachments = require('../testCases/validCases/post_dispatch_attachments')
-// const validDispatchTemplate = require('../testCases/validCases/post_dispatch_template')
-// const validDispatchEdit = require('../testCases/validCases/edit_disaptch')
-// const validDispatchEditInprogress = require('../testCases/validCases/edit_dispatch_inprogress')
-// const validDispatchEditApproved = require('../testCases/validCases/edit_dispatch_approved')
-// const validDispatchEditTimestamp = require('../testCases/validCases/edit_dispatch_approvedTimestamp')
+// Valid test cases
+const validTemplate = require('../testCases/validCases/post_template')
+const validDispatchBoth = require('../testCases/validCases/post_dispatch_both')
+const validDispatchAttachments = require('../testCases/validCases/post_dispatch_attachments')
+const validDispatchTemplate = require('../testCases/validCases/post_dispatch_template')
+const validDispatchEdit = require('../testCases/validCases/edit_disaptch')
+const validDispatchEditInprogress = require('../testCases/validCases/edit_dispatch_inprogress')
+const validDispatchEditApproved = require('../testCases/validCases/edit_dispatch_approved')
+const validDispatchEditTimestamp = require('../testCases/validCases/edit_dispatch_approvedTimestamp')
 
-// // Invalid test cases
-// const invalidDispatch = require('../testCases/invalidCases/post_dispatch_missing_template_and_attachments')
-// const invalidDispatchArchiveNumber = require('../testCases/invalidCases/post_dispatch_missing_archivenumber')
-// const invalidDispatchMissingFileExtension = require('../testCases/invalidCases/post_dispatch_missing_extension')
-// const invalidDispatchIllegalFileExtension = require('../testCases/invalidCases/post_dispatch_illegal_extension')
-// const invalidDispatchIllegalCharacter = require('../testCases/invalidCases/post_dispatch_illegal_character')
+// Invalid test cases
+const invalidDispatch = require('../testCases/invalidCases/post_dispatch_missing_template_and_attachments')
+const invalidDispatchArchiveNumber = require('../testCases/invalidCases/post_dispatch_missing_archivenumber')
+const invalidDispatchMissingFileExtension = require('../testCases/invalidCases/post_dispatch_missing_extension')
+const invalidDispatchIllegalFileExtension = require('../testCases/invalidCases/post_dispatch_illegal_extension')
+const invalidDispatchIllegalCharacter = require('../testCases/invalidCases/post_dispatch_illegal_character')
 
-// // MSW
-// const { rest } = require('msw')
-// const { setupServer } = require('msw/node')
+// MSW
+const { rest } = require('msw')
+const { setupServer } = require('msw/node')
 
-// // Test setup
-// const { setupDB } = require('../test-setup')
-// const context = require('../defaultContext')
+// Test setup
+const { setupDB } = require('../test-setup')
+const context = require('../defaultContext')
 
-// setupDB()
-// jest.setTimeout(15000)
+setupDB()
+jest.setTimeout(15000)
 
-// // Tests
-// describe('Endpoint testing', () => {
-//   // MSW
-//   const server = setupServer(
-//     // getReadyDispatches, Generate PDF from template mock
-//     rest.post('https://api.vtfk.no/pdf/v1/jestTest', (req, res, ctx) => {
-//       return res(ctx.status(201), ctx.json({
-//         body: {
-//           data: {
-//             tittel: 'Parallel test',
-//             'beskrivelse av prosjekte': 'Parallel test',
-//             fremdrift: 'Parallel test',
-//             Regelverk: 'Parallel test'
-//           },
-//           base64: { pdfBase64: 'En pdfbase64' }
-//         }
-//       }))
-//     }),
-//     // getMatrikkel, mock
-//     rest.post('https://api.vtfk.no/matrikkel/v1/jestTestjestTest', (req, res, ctx) => {
-//       return res(ctx.status(200), ctx.json({
-//         msg: 'Matrikkel api successfully connected'
-//       }))
-//     }),
-//     // Validate archivenumber, mock
-//     rest.post('https://api.vtfk.dev/archive/v1/jestTestarchive', (req, res, ctx) => {
-//       return res(ctx.status(200), ctx.json({
-//         msg: 'Archive api successfully connected'
-//       }))
-//     })
-//   )
+// Tests
+describe('Endpoint testing', () => {
+  // MSW
+  const server = setupServer(
+    // getReadyDispatches, Generate PDF from template mock
+    rest.post('https://api.vtfk.no/pdf/v1/jestTest', (req, res, ctx) => {
+      return res(ctx.status(201), ctx.json({
+        body: {
+          data: {
+            tittel: 'Parallel test',
+            'beskrivelse av prosjekte': 'Parallel test',
+            fremdrift: 'Parallel test',
+            Regelverk: 'Parallel test'
+          },
+          base64: { pdfBase64: 'En pdfbase64' }
+        }
+      }))
+    }),
+    // getMatrikkel, mock
+    rest.post('https://api.vtfk.no/matrikkel/v1/jestTestjestTest', (req, res, ctx) => {
+      return res(ctx.status(200), ctx.json({
+        msg: 'Matrikkel api successfully connected'
+      }))
+    }),
+    // Validate archivenumber, mock
+    rest.post('https://api.vtfk.dev/archive/v1/jestTestarchive', (req, res, ctx) => {
+      return res(ctx.status(200), ctx.json({
+        msg: 'Archive api successfully connected'
+      }))
+    })
+  )
 
-//   // beforeAll(() => server.listen())
-//   // afterAll(() => server.close())
-//   // afterEach(() => server.resetHandlers())
+  // beforeAll(() => server.listen())
+  // afterAll(() => server.close())
+  // afterEach(() => server.resetHandlers())
 
-//   const OLD_ENV_VAR = process.env
+  const OLD_ENV_VAR = process.env
 
-//   beforeAll(() => {
-//     // jest.resetModules() // Clears the cache, remove the // if you want trouble :)
-//     process.env = { ...OLD_ENV_VAR },
-//     server.listen()
-//   })
+  beforeAll(() => {
+    // jest.resetModules() // Clears the cache, remove the // if you want trouble :)
+    process.env = { ...OLD_ENV_VAR },
+    server.listen()
+  })
 
-//   afterAll(() => {
-//     process.env = OLD_ENV_VAR,
-//     server.close()
-//   })
+  afterAll(() => {
+    process.env = OLD_ENV_VAR,
+    server.close()
+  })
 
-//   afterEach(() => {
-//     server.resetHandlers()
-//   })
+  afterEach(() => {
+    server.resetHandlers()
+  })
 
-//   const apikeyHeader = {
-//     headers: {
-//       'x-api-key': process.env.APIKEYS_TEST
-//     }
-//   }
+  const apikeyHeader = {
+    headers: {
+      'x-api-key': process.env.APIKEYS_TEST
+    }
+  }
 
-//   // Variables
-//   let idTemplate = ''
-//   let timestampTemplate = ''
-//   let idDispatch = ''
-//   let timestampDispach = ''
-//   let idDispatchOnlyTemplate = ''
-//   let idDispatchAttachments = ''
+  // Variables
+  let idTemplate = ''
+  let timestampTemplate = ''
+  let idDispatch = ''
+  let timestampDispach = ''
+  let idDispatchOnlyTemplate = ''
+  let idDispatchAttachments = ''
 
-//   // Valid cases
-//   describe('Testing validcases', () => {
-//     // Template tests
-//     test('Should post a template to the db', async () => {
-//       const post = await postTemplate(context, validTemplate)
+  // Valid cases
+  describe('Testing validcases', () => {
+    // Template tests
+    test('Should post a template to the db', async () => {
+      const post = await postTemplate(context, validTemplate)
 
-//       idTemplate = post.body._id
-//       timestampTemplate = post.body.createdTimestamp
+      idTemplate = post.body._id
+      timestampTemplate = post.body.createdTimestamp
 
-//       expect(post).resolves
-//       expect(post.body).toBeTruthy()
-//       expect(post.status).toEqual(200)
-//       expect(post.body.name).toBe('Jest Test Template')
-//       expect(post.body.createdBy).toBe('timetrigger')
-//       expect(post.body.template).toBe('Et eller annet')
-//     })
+      expect(post).resolves
+      expect(post.body).toBeTruthy()
+      expect(post.status).toEqual(200)
+      expect(post.body.name).toBe('Jest Test Template')
+      expect(post.body.createdBy).toBe('timetrigger')
+      expect(post.body.template).toBe('Et eller annet')
+    })
 
 //     test('Should get a template with a given id from the db', async () => {
 //       const contextModified = context
@@ -814,5 +814,5 @@
 //       expect(edit.body.message).toBeDefined()
 //       expect(edit.status).toEqual(400)
 //     })
-//   })
-// })
+  })
+})
