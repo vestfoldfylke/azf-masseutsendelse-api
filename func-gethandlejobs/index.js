@@ -10,6 +10,7 @@ const { azfHandleResponse, azfHandleError } = require('@vtfk/responsehandlers')
 const { alertTeams } = require('../sharedcode/helpers/alertTeams.js')
 
 module.exports = async function (context, req) {
+  let jobId
   try {
     // Await the DB connection
     logger('info', 'Connecting to DB')
@@ -42,7 +43,7 @@ module.exports = async function (context, req) {
     const failedJobsArr = []
     let stopHandling = false
 
-    const jobId = jobs._id
+    jobId = jobs._id
     logger('info', `Found a job with id: ${jobId}`)
     logger('info', 'Checking the job status')
     for (const job in jobs.status) {
@@ -194,7 +195,15 @@ module.exports = async function (context, req) {
             throw new Error('Document not found')
           }
           // Current case we're working with.
-          const currentCase = doc.tasks.createCaseDocument[0]
+          let currentCase
+          // TODO With the first run the currentCase is an array, if it fails it turns into and object, must look in to why this happens
+          if(Array.isArray(doc.tasks.createCaseDocument)) {
+            currentCase = doc.tasks.createCaseDocument[0]
+          } else {
+            currentCase = doc.tasks.createCaseDocument
+          }
+          // Array of dispatches to be issued (always one, but in an array)
+          const issueDispatchCopy = doc.tasks.issueDispatch
           // Array of attachments that needs the documentNumber retunren from the createCaseDocumnet Job.
           const uploadAttachmentsCopy = doc.tasks.uploadAttachments
           // Define the retry prop if not found. If found assume we already tried to finish the job but failed and add 1 to the count.
@@ -211,15 +220,19 @@ module.exports = async function (context, req) {
             } else {
               // There's only one casedocument for each task. Index[0] Is fine.
               logger('info', 'Creating the case object')
+              // TODO With the first run the currentTasks is an array, if it fails it turns into and object, must look in to why this happens
+              if(Array.isArray(currentTasks)) { 
+                currentTasks = currentTasks[0]
+              }
               const caseObj = {
-                method: currentTasks[0].method,
-                title: currentTasks[0].data.parameter.title,
-                caseNumber: currentTasks[0].data.parameter.caseNumber,
-                date: currentTasks[0].data.parameter.date,
-                contacts: currentTasks[0].data.parameter.contacts,
-                attachments: currentTasks[0].data.parameter.attachments,
-                paragraph: currentTasks[0].data.parameter.paragraph,
-                responsiblePersonEmail: currentTasks[0].data.parameter.responsiblePersonEmail
+                method: currentTasks.method,
+                title: currentTasks.data.parameter.title,
+                caseNumber: currentTasks.data.parameter.caseNumber,
+                date: currentTasks.data.parameter.date,
+                contacts: currentTasks.data.parameter.contacts,
+                attachments: currentTasks.data.parameter.attachments,
+                paragraph: currentTasks.data.parameter.paragraph,
+                responsiblePersonEmail: currentTasks.data.parameter.responsiblePersonEmail
               }
               // Make the request
               logger('info', 'Trying to create the case document')
@@ -237,6 +250,11 @@ module.exports = async function (context, req) {
               // Just for testing
               // const caseDocSampleReturn = { Recno: 212144, DocumentNumber: '23/00024-10' }
 
+              // If no attachments we need to add the documentnumber to the issueDispatch job
+              for (const dispach of issueDispatchCopy) {
+                dispach.dataMapping = caseDoc.DocumentNumber
+              }
+              // Attach the document number to every attachment to make sure it is uploaded to the correct case
               for (const attachment of uploadAttachmentsCopy) {
                 attachment.dataMapping = caseDoc.DocumentNumber
               }
@@ -245,6 +263,7 @@ module.exports = async function (context, req) {
               const update = {
                 'status.createCaseDocument': 'completed',
                 'tasks.createCaseDocument': currentCase,
+                'tasks.issueDispatch': issueDispatchCopy,
                 'tasks.uploadAttachments': uploadAttachmentsCopy
               }
               logger('info', `Updating job with id: ${jobId}`)
@@ -344,6 +363,7 @@ module.exports = async function (context, req) {
               'status.uploadAttachments': attachments.length === completedTasks ? 'completed' : 'inprogress',
               'tasks.uploadAttachments': attachments
             }
+            logger('info', 'Finding the job and updating the job')
             await Jobs.findOneAndUpdate(filter, update, {
               new: true
             })
