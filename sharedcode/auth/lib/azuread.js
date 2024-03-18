@@ -30,7 +30,8 @@ module.exports = async (authHeader) => {
   }
 
   if (!validatedToken) throw new HTTPError(401, 'Could not validate authentication token')
-  if (!validatedToken.groups || validatedToken.groups.length === 0) throw new HTTPError(401, 'No groups could be found in authentication token')
+  // if (!validatedToken.groups || validatedToken.groups.length === 0) throw new HTTPError(401, 'No groups could be found in authentication token')
+  if (!validatedToken.roles || validatedToken.roles.length === 0) throw new HTTPError(401, 'No roles could be found in authentication token')
 
   // Grab department with graph
   try {
@@ -47,11 +48,11 @@ module.exports = async (authHeader) => {
 
   if (!validatedToken.department) throw new HTTPError(401, 'Could not find the users company department in the authentication token')
 
-  // If allowed groups
+  // If allowed groups/roles
   if (MS.AZUREAD_ALLOWEDGROUPS) {
     const allowedGroups = MS.AZUREAD_ALLOWEDGROUPS.split(',').filter(n => n)
     let found = false
-    for (const userGroup of validatedToken.groups) {
+    for (const userGroup of validatedToken.roles) {
       if (allowedGroups.includes(userGroup)) found = true
     }
     if (!found) throw new HTTPError(401, 'Your account is not a member of any allowed groups')
