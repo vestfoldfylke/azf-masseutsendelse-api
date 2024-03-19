@@ -21,19 +21,34 @@ API used to by masseutsendelse-web to communicate with various systems and APIs.
 |---|---|---|
 | MONGODB_CONNECTIONSTRING | The connecting string for a MongoDB database | mongodb+srv://**[account]**:**[password]**@[clustername]/masseutsendelse?retryWrites=true&w=majority
 | AZURE_BLOB_CONNECTIONSTRING | The connectionstring for Azure Storage account blob | DefaultEndpointsProtocol=https;AccountName=[AccountName];AccountKey=[AccountKey];EndpointSuffix=core.windows.net |
-| AZURE_BLOB_CONTAINERNAME | The container name of the blob storage | blobs
+| AZURE_BLOB_CONTAINERNAME | The container name of the blob storage | blobs |
 | AZUREAD_JWK_URI | JWT signing keys url | https://login.microsoftonline.com/**[TenantId]**/discovery/v2.0/keys" |
 | AZUREAD_ISSUER_URI | URL for the JWT issuer | https://sts.windows.net/**[TenantId]**/ |
-| AZUREAD_CLIENTID | The Azure application id | 0e1e9f89-d80a-4e3b-b5be-5d8cd9a9ca5c |
+| AZUREAD_CLIENTID | The Azure application id | https://**[url]**/.**[domain]**/api |
 | AZUREAD_ALLOWEDGROUPS | Comma separated list of group object ids | bf9f0fb9-47c8-474d-be11-354a41a9f16f, b519ee09-6259-4459-8ead-a3e7afaaf018 |
 | APIKEYS | Any API key(s) you want to be valid | APIKey |
-| MATRIKKEL_BASEURL | The baseurl for the MatrikkelProxyAPI | https://**[url]**:**[port]**/ (Must end with slash) |
-| MATRIKKEL_KEY | The APIKey for connecting to the MatrikkelProxyAPI | APIKey |
-| PDFGENERATOR_ENDPOINT | The endpoint url for azf-pdfgenerator v2 endpoint
-| ARCHIVE_ARCHIVE_ENDPOINT | VTFK azf-archive endpoint | https://[FQDN]/archive/v1/
-| ARCHIVE_ARCHIVE_SUBSCRIPTION_KEY | APIM subscription key | [GUID]
+| MATRIKKEL_BASEURL | The baseurl for the MatrikkelProxyAPI | https://**[url]**/.**[domain]**/api  |
+| MATRIKKEL_APP_REG_CLIENT_ID | Client ID for matrikkel app reg | [ClientID] |
+| MATRIKKEL_APP_REG_CLIENT_SECRET | Client secret for matrikkel app reg | [Secret] |
+| MATRIKKEL_SCOPE | Matrikkel scope | [scope] |
+| MASSEUTSENDELSE_APP_REG_CLIENT_ID | Client ID for masseutsendelse app reg | [ClientID] |
+| MASSEUTSENDELSE_APP_REG_CLIENT_SECRET | Client secret for masseutsendelse app reg | [Secret] |
+| MASSEUTSENDELSE_SCOPE | masseutsendelse scope | [scope] |
+| PDFGENERATOR_ENDPOINT | The endpoint url for azf-pdfgenerator v2 endpoint |
+| PDFGENERATOR_X_FUNCTIONS_KEY | Auth key | [Key] |
+| STATISTICS_URL | The endpoint url for statistics api | https://**[url]**/.**[domain]**/api |
+| STATISTICS_KEY | Auth key | [Key] |
+| ARCHIVE_URL | azf-archive endpoint | https://**[url]**/.**[domain]**/api  |
+| ARCHIVE_SCOPE | Archive scope | [scope] |
+| ARCHIVE_APP_REG_CLIENT_ID | Client ID for archive app reg | [ClientID] |
+| ARCHIVE_APP_REG_CLIENT_SECRET | Client secret for archive app reg | [Secret] |
 | PAPERTRAIL_HOST | URL to the papertrail log | papertrail.example.com/v1/log |
 | PAPERTRAIL_TOKEN | Token to the papertrail log | TOKEN |
+| TEAMS_WEBHOOK_URL | Webhook for teams alerts | [webhook] |
+| GRAPH_SCOPE | Graph scope | https://graph.microsoft.com/.default |
+| GRAPH_URL | Graph url | https://graph.microsoft.com/v1.0 |
+| APP_REG_TENANT_ID | Tenant id | [TenantID] |
+
 
 ## Endpoints GET
 
