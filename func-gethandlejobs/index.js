@@ -197,7 +197,7 @@ module.exports = async function (context, req) {
           // Current case we're working with.
           let currentCase
           // TODO With the first run the currentCase is an array, if it fails it turns into and object, must look in to why this happens
-          if(Array.isArray(doc.tasks.createCaseDocument)) {
+          if (Array.isArray(doc.tasks.createCaseDocument)) {
             currentCase = doc.tasks.createCaseDocument[0]
           } else {
             currentCase = doc.tasks.createCaseDocument
@@ -221,7 +221,7 @@ module.exports = async function (context, req) {
               // There's only one casedocument for each task. Index[0] Is fine.
               logger('info', 'Creating the case object')
               // TODO With the first run the currentTasks is an array, if it fails it turns into and object, must look in to why this happens
-              if(Array.isArray(currentTasks)) { 
+              if (Array.isArray(currentTasks)) {
                 currentTasks = currentTasks[0]
               }
               const caseObj = {

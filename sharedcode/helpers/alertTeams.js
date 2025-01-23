@@ -31,7 +31,7 @@ const alertTeams = async (error, color, failedTask, completedJob, jobId, endpoin
               text: color === 'a80c0c' ? 'azf-masseutsendelse-api failed' : 'azf-masseutsendelse-api finished a job',
               wrap: true,
               style: 'heading',
-              color: color
+              color
             },
             {
               type: 'TextBlock',
@@ -60,7 +60,7 @@ const alertTeams = async (error, color, failedTask, completedJob, jobId, endpoin
               wrap: true,
               weight: 'Bolder',
               size: 'Medium'
-            },
+            }
           ]
         }
       }
