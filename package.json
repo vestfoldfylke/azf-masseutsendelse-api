@@ -11,20 +11,19 @@
     "@azure/storage-blob": "12.11.0",
     "@shelf/jest-mongodb": "2.2.2",
     "@vtfk/azure-blob-client": "0.0.4",
-    "@vtfk/logger": "4.1.2",
-    "@vtfk/responsehandlers": "1.0.25",
+    "@vtfk/logger": "^6.2.0",
+    "@vtfk/responsehandlers": "^1.0.27",
     "@vtfk/utilities": "1.0.0",
-    "axios": "0.24.0",
-    "azure-ad-verify-token": "1.1.2",
+    "axios": "^1.7.9",
+    "azure-ad-verify-token": "^1.1.2",
     "dayjs": "1.10.8",
-    "express": "4.17.3",
-    "mongoose": "6.1.8",
+    "mongoose": "^6.13.6",
     "node-cache": "^5.1.2"
   },
   "devDependencies": {
     "jest": "27.5.1",
     "mongodb-memory-server": "8.2.0",
-    "msw": "^0.36.8"
+    "msw": "^2.7.0"
   },
   "config": {
     "mongodbMemoryServer": {

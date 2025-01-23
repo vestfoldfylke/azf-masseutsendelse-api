@@ -93,6 +93,7 @@ obj
 appsettings.json
 local.settings.json
 local.settings*
+*local.settings*
 prod.json
 
 # Azurite artifacts
