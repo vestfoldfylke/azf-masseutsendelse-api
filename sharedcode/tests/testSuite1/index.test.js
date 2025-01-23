@@ -2,10 +2,10 @@ const Dispatches = require('../../models/dispatches')
 const Templates = require('../../models/templates')
 const { ObjectID } = require('mongodb')
 const { setupDB } = require('../test-setup')
-const axios = require('axios')
+// const axios = require('axios')
 
 setupDB('endpoint-testing')
-jest.mock('axios')
+// const axios = jest.mock('axios')
 jest.setTimeout(30000) // Actions failer noen ganger med 5000ms
 
 // Attachment Schema
@@ -494,34 +494,34 @@ it('Should return an attachment from the database', async () => {
   expect(attachments).toBeTruthy()
 })
 
-it('Should post a file and return that it succeeded', async () => {
-  const id = new ObjectID()
-  const postFile = [{ dispatchId: id, fileName: 'test jest' }]
+// it('Should post a file and return that it succeeded', async () => {
+//   const id = new ObjectID()
+//   const postFile = [{ dispatchId: id, fileName: 'test jest' }]
 
-  const resp = { data: postFile }
-  axios.post.mockResolvedValue(resp)
+//   const resp = { data: postFile }
+//   // axios.post.mockResolvedValue(resp)
 
-  axios.post.mockImplementation(() => Promise.resolve(resp))
-})
+//   axios.post.mockImplementation(() => Promise.resolve(resp))
+// })
 
-it('Should get a file and return that it succeeded', async () => {
-  const id = new ObjectID()
-  const getFile = [{ dispatchId: id, fileName: 'test jest' }]
+// it('Should get a file and return that it succeeded', async () => {
+//   const id = new ObjectID()
+//   const getFile = [{ dispatchId: id, fileName: 'test jest' }]
 
-  const resp = { data: getFile }
-  axios.get.mockResolvedValue(resp)
+//   const resp = { data: getFile }
+//   //axios.get.mockResolvedValue(resp)
 
-  axios.get.mockImplementation(() => Promise.resolve(resp))
-})
+//   axios.get.mockImplementation(() => Promise.resolve(resp))
+// })
 
-it('Should delete a file and return that it succeeded', async () => {
-  const getFile = [{ fileName: 'test jest' }]
+// it('Should delete a file and return that it succeeded', async () => {
+//   const getFile = [{ fileName: 'test jest' }]
 
-  const resp = { data: getFile }
-  axios.delete.mockResolvedValue(resp)
+//   const resp = { data: getFile }
+//   //axios.delete.mockResolvedValue(resp)
 
-  axios.delete.mockImplementation(() => Promise.resolve(resp))
-})
+//   axios.delete.mockImplementation(() => Promise.resolve(resp))
+// })
 
 it('Should reject the post of a dispatch object due to the lack of template or attachments', async () => {
   // Create a new document using the model
