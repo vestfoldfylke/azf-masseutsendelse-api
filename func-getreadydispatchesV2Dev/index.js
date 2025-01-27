@@ -26,11 +26,11 @@ module.exports = async function (context, req) {
     const d = await Dispatches.findOne({ status: 'approved' })
     if (d === null) {
       logger('info', 'No jobs found')
-      return context.res.send([])
+      return azfHandleResponse('No jobs found', context, req)
     }
     const dispatches = []
     dispatches.push(await d)
-    if (!dispatches || dispatches.length === 0) return context.res.send([])
+    if (!dispatches || dispatches.length === 0) return azfHandleResponse('No jobs found', context, req)
 
     // Loop through all dispatches
     for (const dispatch of dispatches) {
@@ -242,9 +242,11 @@ module.exports = async function (context, req) {
       logger('info', `Successfully updated the dispatch with id: ${job._id}`)
       await alertTeams([], 'completed', [], 'Jobs have now been created for the dispatch, everything went well', job._id, context.executionContext.functionName)
     }
+    console.log('hei')
     return await azfHandleResponse(updatedDispatch, context, req)
   } catch (err) {
-    await alertTeams(err, 'error', [], [], 'no id found', context.executionContext.functionName)
+    console.log('hei2')
+    await alertTeams(err, 'error', 'func-getreadydispatchesV2Dev failed', [], 'no id found', context.executionContext.functionName)
     return await azfHandleError(err, context, req)
   }
 }

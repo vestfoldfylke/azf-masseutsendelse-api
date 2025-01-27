@@ -243,7 +243,7 @@ module.exports = async function (context, req) {
     }
     return await azfHandleResponse(updatedDispatch, context, req)
   } catch (err) {
-    await alertTeams(err, 'error', [], [], 'no id found', context.executionContext.functionName)
+    await alertTeams(err, 'error', 'func-getreadydispatchesV2 failed', [], 'no id found', context.executionContext.functionName)
     return await azfHandleError(err, context, req)
   }
 }
