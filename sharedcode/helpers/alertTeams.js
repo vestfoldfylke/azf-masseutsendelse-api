@@ -56,7 +56,7 @@ const alertTeams = async (error, color, failedTask, completedJob, jobId, endpoin
             },
             {
               type: 'TextBlock',
-              text: color === 'a80c0c' ? error : 'Everything is good!',
+              text: color === 'a80c0c' ? JSON.stringify(error) : 'Everything is good!',
               wrap: true,
               weight: 'Bolder',
               size: 'Medium'

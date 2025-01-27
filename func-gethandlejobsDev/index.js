@@ -37,6 +37,9 @@ module.exports = async function (context, req) {
     if (!jobs) {
       logger('info', 'No jobs to handle found, exit')
       // await alertTeams([], 'completed', [] , 'job', context.executionContext.functionName)
+      // error: any, color: any, failedTask: any, completedJob: any, jobId: any, endpoint: any
+      // await alertTeams({error: 'noe gikk galt!!!'}, 'error', 'failed task' , [], undefined, context.executionContext.functionName)
+      // await alertTeams({error: 'noe gikk galt!!!'}, 'error', 'funcgetandlejobsDev failed', [], 'no id found', context.executionContext.functionName)
       // await alertTeams({}, 'completed', {}, 'This job is done', 'et endpoint') Dette er ikke teams webhooken glad i
       return await azfHandleResponse('No jobs found', context, req)
     }
