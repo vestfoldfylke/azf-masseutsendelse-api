@@ -26,11 +26,11 @@ module.exports = async function (context, req) {
     const d = await Dispatches.findOne({ status: 'approved' })
     if (d === null) {
       logger('info', 'No jobs found')
-      return context.res.send([])
+      return azfHandleResponse('No jobs found', context, req)
     }
     const dispatches = []
     dispatches.push(await d)
-    if (!dispatches || dispatches.length === 0) return context.res.send([])
+    if (!dispatches || dispatches.length === 0) return azfHandleResponse('No jobs found', context, req)
 
     // Loop through all dispatches
     for (const dispatch of dispatches) {
