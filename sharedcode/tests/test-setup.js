@@ -1,15 +1,15 @@
-const dbMem = require('./Memory-DB')
+const dbMem = require("./Memory-DB");
 
 module.exports = {
-  setupDB () {
+  setupDB() {
     // Connect to the memory DB
     beforeAll(async () => {
-      await dbMem.connect()
-    })
+      await dbMem.connect();
+    });
 
     // Clear DB & Disconnect from the memory DB
     afterAll(async () => {
-      await dbMem.closeDatabase()
-    })
+      await dbMem.closeDatabase();
+    });
   }
-}
+};

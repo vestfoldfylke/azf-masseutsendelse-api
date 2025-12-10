@@ -1,58 +1,49 @@
 /*
   Import dependencies
 */
-const { STATUS_CODES } = require('http')
-const { createObjectWithOrderedKeys } = require('./lib/common')
+const { STATUS_CODES } = require("node:http");
 
 class HTTPError extends Error {
   /**
    *
-   * @param {number} statusCode HTTP Statuscode. Default: 400
+   * @param {number} statusCode HTTP status code. Default: 400
    * @param {string} message Error message
    * @param {string} title Error title
    * @param {Array} errors String array of error messages
    * @param {*} documentation Link(s) to documentation
    */
-  constructor (statusCode = 400, message, title, errors = [], documentation = undefined) {
-    super()
-    Error.captureStackTrace(this, this.constructor)
-    if (title) this.title = title
-    if (message) this.message = message || STATUS_CODES[statusCode]
-    if (parseInt(statusCode)) this.statusName = toName(parseInt(statusCode))
-    if (statusCode) this.statusCode = statusCode
-    if (errors && Array.isArray(errors) && errors.length > 0) this.errors = errors
-    if (documentation) this.documentation = documentation
+  constructor(statusCode = 400, message, title, errors = [], documentation = undefined) {
+    super();
+    Error.captureStackTrace(this, this.constructor);
+    if (title) this.title = title;
+    if (message) this.message = message || STATUS_CODES[statusCode];
+    this.statusName = toName(statusCode);
+    if (statusCode) this.statusCode = statusCode;
+    if (errors && Array.isArray(errors) && errors.length > 0) this.errors = errors;
+    if (documentation) this.documentation = documentation;
   }
 
   /**
-   * Creates an object-representation of this error
-   * @returns {object}
-   */
-  toObject () {
-    return createObjectWithOrderedKeys(this, ['title', 'message', 'name', 'statusCode', 'errors'], ['documentation'])
-  }
-
-  /**
-   * Creates a HTTP response object from this error
+   * Creates an HTTP response object from this error
    * @returns
    */
-  toHTTPResponse () {
+  toHTTPResponse() {
     return {
       status: this.statusCode,
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       },
-      body: {
+      jsonBody: {
         error: {
-          statusName: this.statusName,
           statusCode: this.statusCode,
-          title: this.title,
+          statusName: this.statusName,
           message: this.message,
+          title: this.title,
           errors: this.errors
         },
         documentation: this.documentation ? this.documentation : {}
       }
-    }
+    };
   }
 }
 
@@ -62,11 +53,13 @@ class HTTPError extends Error {
  *   302 => "Found"
  *   404 => "NotFoundError"
  *   500 => "InternalServerError"
+ *
+ *   @param {number} code HTTP status code
  */
 const toName = (code) => {
-  const suffix = (code / 100 | 0) === 4 || (code / 100 | 0) === 5 ? 'Error' : ''
-  const statusName = STATUS_CODES[code].replace(/error$/i, '').replace(/ /g, '')
-  return `${statusName}${suffix}`
-}
+  const suffix = ((code / 100) | 0) === 4 || ((code / 100) | 0) === 5 ? "Error" : "";
+  const statusName = STATUS_CODES[code].replace(/error$/i, "").replace(/ /g, "");
+  return `${statusName}${suffix}`;
+};
 
-module.exports = HTTPError
+module.exports = HTTPError;

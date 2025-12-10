@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 // Tasks
 // const tasksSchema = new mongoose.Schema({
@@ -35,32 +35,32 @@ const jobsSchema = new mongoose.Schema({
   status: {
     syncRecipients: {
       type: String,
-      default: 'waiting',
-      enum: ['waiting', 'inprogress', 'completed', 'failed'],
+      default: "waiting",
+      enum: ["waiting", "inprogress", "completed", "failed"],
       required: true
     },
     createCaseDocument: {
       type: String,
-      default: 'waiting',
-      enum: ['waiting', 'inprogress', 'completed', 'failed'],
+      default: "waiting",
+      enum: ["waiting", "inprogress", "completed", "failed"],
       required: true
     },
     uploadAttachments: {
       type: String,
-      default: 'waiting',
-      enum: ['waiting', 'inprogress', 'completed', 'failed'],
+      default: "waiting",
+      enum: ["waiting", "inprogress", "completed", "failed"],
       required: true
     },
     issueDispatch: {
       type: String,
-      default: 'waiting',
-      enum: ['waiting', 'inprogress', 'completed', 'failed'],
+      default: "waiting",
+      enum: ["waiting", "inprogress", "completed", "failed"],
       required: true
     },
     createStatistics: {
       type: String,
-      default: 'waiting',
-      enum: ['waiting', 'inprogress', 'completed', 'failed'],
+      default: "waiting",
+      enum: ["waiting", "inprogress", "completed", "failed"],
       required: true
     }
   },
@@ -84,9 +84,8 @@ const jobsSchema = new mongoose.Schema({
     }
   },
   failedTasks: []
+});
 
-})
+const Jobs = mongoose.model("Jobs", jobsSchema);
 
-const Jobs = mongoose.model('Jobs', jobsSchema)
-
-module.exports = Jobs
+module.exports = Jobs;

@@ -1,39 +1,60 @@
-const { default: axios } = require('axios')
-const { PDFGENERATOR } = require('../config')
-const { azfHandleError, azfHandleResponse } = require('@vtfk/responsehandlers')
-const HTTPError = require('../sharedcode/vtfk-errors/httperror')
+const { logger } = require("@vestfoldfylke/loglady");
+const { app } = require("@azure/functions");
+const { PDF_GENERATOR } = require("../config");
+const { response } = require("../sharedcode/response/response-handler");
+const HTTPError = require("../sharedcode/vtfk-errors/httperror");
 
-module.exports = async function (context, req) {
-  try {
-    // Get datt from request and validate
-    const preview = context.bindingData.preview
-    const template = context.bindingData.template
-    const documentDefinitionId = context.bindingData.documentDefinitionId
-    const data = context.bindingData.data
-
-    if (!preview) throw new HTTPError(400, 'Preview must provided')
-    if (!template) throw new HTTPError(400, 'Template must be provided')
-    if (!documentDefinitionId) throw new HTTPError(400, 'DocumentDefinitionId must be provided')
-    if (!data) throw new HTTPError(400, 'Data must be provided')
-
-    // Build request
-    const requestData = {
-      preview,
-      template,
-      documentDefinitionId,
-      data
-    }
-
-    // Define headers
-    const headers = {
-      'x-functions-key': PDFGENERATOR.PDFGENERATOR_X_FUNCTIONS_KEY
-    }
-
-    // Make the request
-    const request = await axios.post(PDFGENERATOR.PDFGENERATOR_ENDPOINT, requestData, { headers })
-
-    return await azfHandleResponse(request.data, context, req, 200)
-  } catch (error) {
-    return await azfHandleError(error, context, req)
+const generatePDF = async (req) => {
+  // Get data from request and validate
+  const { preview, template, templateName, documentDefinitionId, data } = await req.json();
+  if (!preview) {
+    return new HTTPError(400, "Preview must provided").toHTTPResponse();
   }
-}
+  if (!template) {
+    return new HTTPError(400, "Template must be provided").toHTTPResponse();
+  }
+  if (!documentDefinitionId) {
+    return new HTTPError(400, "DocumentDefinitionId must be provided").toHTTPResponse();
+  }
+  if (!data) {
+    return new HTTPError(400, "Data must be provided").toHTTPResponse();
+  }
+
+  // Build request
+  const requestData = {
+    preview,
+    template,
+    documentDefinitionId,
+    data
+  };
+
+  // Define headers
+  const headers = {
+    "x-functions-key": PDF_GENERATOR.PDF_GENERATOR_X_FUNCTIONS_KEY
+  };
+
+  // Make the request
+  const responseRequest = await fetch(PDF_GENERATOR.PDF_GENERATOR_ENDPOINT, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(requestData)
+  });
+
+  if (!responseRequest.ok) {
+    const errorData = await responseRequest.text();
+    logger.error("Failed to create a PDF using Template {TemplateName}. Status: {Status}: {StatusText}: {@ErrorData}", templateName, responseRequest.status, responseRequest.statusText, errorData);
+    return new HTTPError(responseRequest.status, `Error from PDF Generator: ${responseRequest.statusText}`).toHTTPResponse();
+  }
+
+  const responseData = await responseRequest.json();
+  logger.info("Generated a PDF from Template '{TemplateName}'", templateName);
+
+  return response(responseData);
+};
+
+app.http("generatePDF", {
+  authLevel: "anonymous",
+  handler: generatePDF,
+  methods: ["POST"],
+  route: "generatePDF"
+});

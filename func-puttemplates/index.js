@@ -1,43 +1,60 @@
-const Templates = require('../sharedcode/models/templates.js')
-const getDb = require('../sharedcode/connections/masseutsendelseDB.js')
-const utils = require('@vtfk/utilities')
-const HTTPError = require('../sharedcode/vtfk-errors/httperror')
-const { azfHandleResponse, azfHandleError } = require('@vtfk/responsehandlers')
+const { app } = require("@azure/functions");
+const { logger } = require("@vestfoldfylke/loglady");
+const { auth } = require("../sharedcode/auth/auth");
+const getDb = require("../sharedcode/connections/masseutsendelseDB.js");
+const Templates = require("../sharedcode/models/templates.js");
+const HTTPError = require("../sharedcode/vtfk-errors/httperror");
+const { errorResponse, response } = require("../sharedcode/response/response-handler");
 
-module.exports = async function (context, req) {
+const putTemplates = async (req) => {
   try {
     // Authentication / Authorization
-    const requestor = await require('../sharedcode/auth/auth').auth(req)
+    const requestor = await auth(req);
 
-    // Strip away som fields that should not bed set by the request.
-    req.body = utils.removeKeys(req.body, ['createdTimestamp', 'createdBy', 'createdById', 'modifiedTimestamp', 'modifiedBy', 'modifiedById'])
+    const requestBody = await req.json();
 
     // Update modified by
-    req.body.modifiedBy = requestor.name
-    req.body.modifiedById = requestor.id
-    req.body.modifiedTimestamp = new Date()
-    req.body.modifiedByDepartment = requestor.department
+    requestBody.modifiedBy = requestor.name;
+    requestBody.modifiedById = requestor.id;
+    requestBody.modifiedTimestamp = new Date();
+    requestBody.modifiedByDepartment = requestor.department;
 
     // Get ID from request
-    const id = context.bindingData.id
+    const id = req.params.id;
 
-    if (!id) throw new HTTPError(400, 'No template id was provided')
+    if (!id) {
+      return new HTTPError(400, "No template id was provided").toHTTPResponse();
+    }
 
     // Await the database
-    await getDb()
+    await getDb();
 
     // Get the existing record
-    const existingTemplate = await Templates.findById(id).lean()
-    if (!existingTemplate) throw new HTTPError(400, `Template with id ${id} could no be found`)
+    const existingTemplate = await Templates.findById(id).lean();
+    if (!existingTemplate) {
+      logger.error("Template with Id {Id} could not be found", id);
+      return new HTTPError(400, `Template with id ${id} could not be found`).toHTTPResponse();
+    }
 
     // Increment the version number
-    req.body.version = existingTemplate.version + 1
+    requestBody.version = existingTemplate.version + 1;
 
     // Update the template
-    const updatedTemplate = await Templates.findByIdAndUpdate(id, req.body, { new: true })
+    const updatedTemplate = await Templates.findByIdAndUpdate(id, requestBody, { new: true });
 
-    return await azfHandleResponse(updatedTemplate, context, req)
+    logger.info("Returning updated template with Id {Id}", id);
+    return response(updatedTemplate);
   } catch (err) {
-    return await azfHandleError(err, context, req)
+    logger.errorException(err, "Failed to put templates");
+    return errorResponse(err, "Failed to put templates", 400);
   }
-}
+};
+
+app.http("putTemplates", {
+  authLevel: "anonymous",
+  handler: putTemplates,
+  methods: ["PUT"],
+  route: "templates/{id}"
+});
+
+module.exports = { putTemplates };

@@ -1,23 +1,39 @@
-const Templates = require('../sharedcode/models/templates.js')
-const getDb = require('../sharedcode/connections/masseutsendelseDB.js')
-const HTTPError = require('../sharedcode/vtfk-errors/httperror')
-const { azfHandleResponse, azfHandleError } = require('@vtfk/responsehandlers')
+const { logger } = require("@vestfoldfylke/loglady");
+const { app } = require("@azure/functions");
+const { auth } = require("../sharedcode/auth/auth");
+const getDb = require("../sharedcode/connections/masseutsendelseDB.js");
+const Templates = require("../sharedcode/models/templates.js");
+const { errorResponse, response } = require("../sharedcode/response/response-handler");
+const HTTPError = require("../sharedcode/vtfk-errors/httperror");
 
-module.exports = async function (context, req) {
+const getTemplates = async (req) => {
   try {
     // Authentication / Authorization
-    await require('../sharedcode/auth/auth').auth(req)
+    await auth(req);
 
     // Await the db connection.
-    await getDb()
+    await getDb();
 
     // Find all the templates
-    const templates = await Templates.find({})
-    if (!templates) throw new HTTPError(404, 'No templates found in the databases')
+    const templates = await Templates.find({});
+    if (!templates) {
+      logger.error("No templates found in the database");
+      return new HTTPError(404, "No templates found in the database").toHTTPResponse();
+    }
 
-    // Return the Templates
-    return await azfHandleResponse(templates, context, req)
+    logger.info("Returning {TemplateCount} templates", templates.length);
+    return response(templates);
   } catch (err) {
-    return await azfHandleError(err, context, req)
+    logger.errorException(err, "Failed to get templates");
+    return errorResponse(err, "Failed to get templates", 400);
   }
-}
+};
+
+app.http("getTemplates", {
+  authLevel: "anonymous",
+  handler: getTemplates,
+  methods: ["GET"],
+  route: "templates"
+});
+
+module.exports = { getTemplates };

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 /*
   Subschemas
@@ -32,7 +32,7 @@ const dispatchTemplateSchema = new mongoose.Schema({
   template: {
     type: String
   }
-})
+});
 
 // Polygon
 const polygonSchema = new mongoose.Schema({
@@ -67,19 +67,22 @@ const polygonSchema = new mongoose.Schema({
     }
   },
   vertices: []
-})
+});
 
 // Attachment
-const attachmentSchema = new mongoose.Schema({
-  name: {
+const attachmentSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true
+    },
     type: String,
-    required: true
+    size: Number,
+    lastModified: Number,
+    lastModifiedDate: String
   },
-  type: String,
-  size: Number,
-  lastModified: Number,
-  lastModifiedDate: String
-}, { _id: false })
+  { _id: false }
+);
 /*
   Model schema
 */
@@ -105,8 +108,8 @@ const dispatchesSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    default: 'notapproved',
-    enum: ['notapproved', 'approved', 'inprogress', 'completed'],
+    default: "notapproved",
+    enum: ["notapproved", "approved", "inprogress", "completed"],
     required: true
   },
   template: {
@@ -179,10 +182,12 @@ const dispatchesSchema = new mongoose.Schema({
         required: true
       }
     },
-    polygons: [{
-      type: polygonSchema,
-      validate: [(val) => val.length > 0]
-    }]
+    polygons: [
+      {
+        type: polygonSchema,
+        validate: [(val) => val.length > 0]
+      }
+    ]
   },
   e18Id: {
     type: String
@@ -202,7 +207,7 @@ const dispatchesSchema = new mongoose.Schema({
   },
   createdById: {
     type: String,
-    default: '00000000-0000-0000-0000-000000000000',
+    default: "00000000-0000-0000-0000-000000000000",
     required: true
   },
   createdByDepartment: {
@@ -216,7 +221,7 @@ const dispatchesSchema = new mongoose.Schema({
   },
   modifiedBy: {
     type: String,
-    default: 'Noen André',
+    default: "Noen André",
     required: true
   },
   modifiedByEmail: {
@@ -229,7 +234,7 @@ const dispatchesSchema = new mongoose.Schema({
   },
   modifiedById: {
     type: String,
-    default: '00000000-0000-0000-0000-000000000000',
+    default: "00000000-0000-0000-0000-000000000000",
     required: true
   },
   approvedTimestamp: {
@@ -247,8 +252,8 @@ const dispatchesSchema = new mongoose.Schema({
   approvedByDepartment: {
     type: String
   }
-})
+});
 
-const Dispatches = mongoose.model('Dispatches', dispatchesSchema)
+const Dispatches = mongoose.model("Dispatches", dispatchesSchema);
 
-module.exports = Dispatches
+module.exports = Dispatches;
