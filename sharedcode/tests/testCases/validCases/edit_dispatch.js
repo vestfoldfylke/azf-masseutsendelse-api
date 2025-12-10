@@ -46,13 +46,13 @@ module.exports = {
     _id: "61fcf747033a6c44ebabdc7b",
     title: "Parallel test",
     projectnumber: "22/00009",
-    archivenumber: "",
-    validatedArchivenumber: "",
+    archivenumber: "22/00009",
+    validatedArchivenumber: "22/00009",
     archiveUrl: "https://360test.vtfk.no//locator.aspx?name=DMS.Case.Details.Simplified.2&recno=234483&module=Case&subtype=2",
-    status: "completed",
+    status: "approved",
     attachments: [
       {
-        name: "Software stack.docx",
+        name: "Edit stack.docx",
         type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         size: 15449,
         lastModified: 1633956197000,

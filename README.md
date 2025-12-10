@@ -4,9 +4,9 @@ API used to by masseutsendelse-web to communicate with various systems and APIs.
 # Usage
 ## Setup dependencies
 1. Create an Azure App Registration
-1. Add custom claim for **department** attribute for the app registration
+2. Add custom claim for **department** attribute for the app registration
    https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-claims-mapping#include-the-employeeid-and-tenantcountry-as-claims-in-tokens
-1. Create an MongoDB database
+3. Create an MongoDB database
 ## Setup project
 1. Clone/Fork the project
 2. run **npm i** to install project dependencies
@@ -17,37 +17,31 @@ API used to by masseutsendelse-web to communicate with various systems and APIs.
 
 ## Environment variables
 
-| Variable | Description | Example |
-|---|---|---|
-| MONGODB_CONNECTIONSTRING | The connecting string for a MongoDB database | mongodb+srv://**[account]**:**[password]**@[clustername]/masseutsendelse?retryWrites=true&w=majority
-| AZURE_BLOB_CONNECTIONSTRING | The connectionstring for Azure Storage account blob | DefaultEndpointsProtocol=https;AccountName=[AccountName];AccountKey=[AccountKey];EndpointSuffix=core.windows.net |
-| AZURE_BLOB_CONTAINERNAME | The container name of the blob storage | blobs |
-| AZUREAD_JWK_URI | JWT signing keys url | https://login.microsoftonline.com/**[TenantId]**/discovery/v2.0/keys" |
-| AZUREAD_ISSUER_URI | URL for the JWT issuer | https://sts.windows.net/**[TenantId]**/ |
-| AZUREAD_CLIENTID | The Azure application id | https://**[url]**/.**[domain]**/api |
-| AZUREAD_ALLOWEDGROUPS | Comma separated list of group object ids | bf9f0fb9-47c8-474d-be11-354a41a9f16f, b519ee09-6259-4459-8ead-a3e7afaaf018 |
-| APIKEYS | Any API key(s) you want to be valid | APIKey |
-| MATRIKKEL_BASEURL | The baseurl for the MatrikkelProxyAPI | https://**[url]**/.**[domain]**/api  |
-| MATRIKKEL_APP_REG_CLIENT_ID | Client ID for matrikkel app reg | [ClientID] |
-| MATRIKKEL_APP_REG_CLIENT_SECRET | Client secret for matrikkel app reg | [Secret] |
-| MATRIKKEL_SCOPE | Matrikkel scope | [scope] |
-| MASSEUTSENDELSE_APP_REG_CLIENT_ID | Client ID for masseutsendelse app reg | [ClientID] |
-| MASSEUTSENDELSE_APP_REG_CLIENT_SECRET | Client secret for masseutsendelse app reg | [Secret] |
-| MASSEUTSENDELSE_SCOPE | masseutsendelse scope | [scope] |
-| PDFGENERATOR_ENDPOINT | The endpoint url for azf-pdfgenerator v2 endpoint |
-| PDFGENERATOR_X_FUNCTIONS_KEY | Auth key | [Key] |
-| STATISTICS_URL | The endpoint url for statistics api | https://**[url]**/.**[domain]**/api |
-| STATISTICS_KEY | Auth key | [Key] |
-| ARCHIVE_URL | azf-archive endpoint | https://**[url]**/.**[domain]**/api  |
-| ARCHIVE_SCOPE | Archive scope | [scope] |
-| ARCHIVE_APP_REG_CLIENT_ID | Client ID for archive app reg | [ClientID] |
-| ARCHIVE_APP_REG_CLIENT_SECRET | Client secret for archive app reg | [Secret] |
-| PAPERTRAIL_HOST | URL to the papertrail log | papertrail.example.com/v1/log |
-| PAPERTRAIL_TOKEN | Token to the papertrail log | TOKEN |
-| TEAMS_WEBHOOK_URL | Webhook for teams alerts | [webhook] |
-| GRAPH_SCOPE | Graph scope | https://graph.microsoft.com/.default |
-| GRAPH_URL | Graph url | https://graph.microsoft.com/v1.0 |
-| APP_REG_TENANT_ID | Tenant id | [TenantID] |
+| Variable                     | Description                                              | Example                                                                                                          |
+|------------------------------|----------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
+| MONGODB_CONNECTIONSTRING     | The connecting string for a MongoDB database             | mongodb+srv://**[account]**:**[password]**@[clustername]/masseutsendelse?retryWrites=true&w=majority             |
+| AZURE_BLOB_CONNECTIONSTRING  | The connectionstring for Azure Storage account blob      | DefaultEndpointsProtocol=https;AccountName=[AccountName];AccountKey=[AccountKey];EndpointSuffix=core.windows.net |
+| AZURE_BLOB_CONTAINERNAME     | The container name of the blob storage                   | blobs                                                                                                            |
+| AZUREAD_JWK_URI              | JWT signing keys url                                     | https://login.microsoftonline.com/**[TenantId]**/discovery/v2.0/keys"                                            |
+| AZUREAD_ISSUER_URI           | URL for the JWT issuer                                   | https://sts.windows.net/**[TenantId]**/                                                                          |
+| AZUREAD_CLIENTID             | The Azure application id                                 | https://**[url]**/.**[domain]**/api                                                                              |
+| AZUREAD_ALLOWEDGROUPS        | Comma separated list of group object ids                 | bf9f0fb9-47c8-474d-be11-354a41a9f16f, b519ee09-6259-4459-8ead-a3e7afaaf018                                       |
+| AZURE_CLIENT_ID              | The Azure application id for service to service auth     | guid                                                                                                             |
+| AZURE_CLIENT_SECRET          | The Azure application secret for service to service auth | secret                                                                                                           |
+| AZURE_TENANT_ID              | The Azure tenant id for service to service auth          | guid                                                                                                             |
+| APIKEYS                      | Any API key(s) you want to be valid                      | APIKey                                                                                                           |
+| MATRIKKEL_BASEURL            | The baseurl for the MatrikkelProxyAPI                    | https://**[url]**/.**[domain]**/api                                                                              |
+| MATRIKKEL_SCOPE              | Matrikkel scope                                          | [scope]                                                                                                          |
+| PDFGENERATOR_ENDPOINT        | The endpoint url for azf-pdfgenerator v2 endpoint        |                                                                                                                  |
+| PDFGENERATOR_X_FUNCTIONS_KEY | Auth key                                                 | [Key]                                                                                                            |
+| STATISTICS_URL               | The endpoint url for statistics api                      | https://**[url]**/.**[domain]**/api                                                                              |
+| STATISTICS_KEY               | Auth key                                                 | [Key]                                                                                                            |
+| ARCHIVE_URL                  | azf-archive endpoint                                     | https://**[url]**/.**[domain]**/api                                                                              |
+| ARCHIVE_SCOPE                | Archive scope                                            | [scope]                                                                                                          |
+| ARCHIVE_SHOW_DISPATCH_URL    | URL to show the dispatch in archive system               | https://archive.endpoint.url/                                                                                    |
+| TEAMS_ALERTS_WEBHOOK_URL     | Webhook for teams alerts                                 | [webhook]                                                                                                        |
+| GRAPH_SCOPE                  | Graph scope                                              | https://graph.microsoft.com/.default                                                                             |
+| GRAPH_URL                    | Graph url                                                | https://graph.microsoft.com/v1.0                                                                                 |
 
 
 ## Endpoints GET
@@ -319,12 +313,13 @@ For documentation on the azure-blob-client:
 
 ```json
 {
-    "name": "Mail.msg",
-    "path": "620fa95b909f461cacf5adf2/Mail.msg", //Path used to locate the requested file, /{id}/{name}
-    "extension": "msg",
-    "type": "application/octet-stream",
-    "encoding": "base64",
-    "data": "some string value"
+  "name": "Mail.msg",
+  "path": "620fa95b909f461cacf5adf2/Mail.msg", //Path used to locate the requested file, /{id}/{name}
+  "extension": "msg",
+  "type": "application/octet-stream",
+  "encoding": "base64",
+  "data": "some string value"
+}
 ```
 
 **`GET /matrikkel/{endpoint}`**
@@ -341,10 +336,10 @@ For Documentation on the matrikkel-proxy:
 [
     {
        "_type":"FysiskPerson",
-       "_namespace":"http://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/person",
+       "_namespace":"https://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/person",
        "id":{
           "_type":"FysiskPersonId",
-          "_namespace":"http://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/person",
+          "_namespace":"https://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/person",
           "value":"1"
        },
        "oppdateringsdato":"2021-02-28T03:08:55.344000000+01:00",
@@ -443,690 +438,697 @@ This endpoint is used to post a new dispatch object to the mongoDB.
 ```json
 
 {
-    "title":"Demo",
-    "projectnumber":"Demo ",
-    "archivenumber":"22/00009", //Valid archive number in p360
-    "template":{ //Selected template
-       "_id":"61d84dad786bdf965164c6fc",
-       "name":"Demo",
-       "description":"Mal for varsling til av demo",
-       "version":10,
-       "enabled":true,
-       "documentDefinitionId":"brevmal",
-       "template":"base64",
-       "language":"nb",
-       "createdTimestamp":"2022-01-07T14:25:08.981Z",
-       "createdBy":"Demo",
-       "createdById":"00000000-0000-0000-0000-000000000000",
-       "modifiedTimestamp":"2022-01-27T08:46:01.524Z",
-       "modifiedBy":"Demo Demosen",
-       "modifiedById":"e134g211-ee11-7ece-b4a0-a13j7dc96313",
-       "__v":0,
-       "modifiedByDepartment":"Teknologi og digitalisering",
-       "data":{ //Data from the template
-          "tittel":"Demo",
-          "beskrivelse av prosjekte":"Demo",
-          "fremdrift":"Demo",
-          "Regelverk":" § Demo"
-       }
-    },
-    "attachments":[
-       {
-          "name":"demo.png",
-          "type":"demo/png",
-          "size":153617,
-          "lastModified":1644922741231,
-          "lastModifiedDate":"[native Date Tue Feb 15 2022 11:59:01 GMT+0100 (sentraleuropeisk normaltid)]",
-          "data":"data:demo/png;base64"
-       }
-    ],
-    "owners":[ //List of owners
-       {
-          "_type":"FysiskPerson",
-          "_namespace":"http://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/person",
-          "id":"1010101",
-          "oppdateringsdato":"2020-06-15T22:40:57.525000000+02:00",
-          "versjonId":"3",
-          "oppdatertAv":"smatmynd",
-          "versjon":"1010101010101",
-          "nummer":"01010101010",
-          "navn":"DEMO DEMOSEN",
-            "postadresse":{
-                "adresselinje2":"Demo vegen 3",
-                "adresselinje3":"1337 Demo",
-                "postnummeromradeId":"101010101",
-                "landKodeId":"0000"
-            },
-            "uuid":{
-                "navnerom":"https://data.geonorge.no/matrikkel",
-                "uuid":"8f6420fd-3a70-5da4-aa11-b925s8bbec6b"
-             },
-             "etternavn":"DEMOSEN",
-             "fornavn":"DEMO",
-             "spesifisertRegTypeKodeId":"10",
-             "bostedsadresse":{
-                "kommunenummer":"1337",
-                "adressekode":"0000",
-                "husnummer":"1",
-                "gardsnummer":"0",
-                "bruksnummer":"0",
-                "festenummer":"0",
-                "undernummer":"0",
-                "postnummer":"1337"
-             },
-             "personStatusKodeId":"1",
-             "dsf":[
-                "Object"
-             ],
-          "ownerships":[ //What the given owner owns inside the polygon. 
-             {
-                "_type":"PersonTinglystEierforhold",
-                "_namespace":"http://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/matrikkelenhet",
-                "oppdateringsdato":"2020-06-17T22:16:57.579000000+02:00",
-                "versjonId":"3",
-                "oppdatertAv":"smatmynd",
-                "id":"10101010",
-                "kommuneId":"1337",
-                "eierforholdKodeId":"0",
-                "uuid":{
-                   "navnerom":"https://data.geonorge.no/matrikkel",
-                   "uuid":"8a5ddad5-9666-5d96-8323-9c0db83f3168"
-                },
-                "andel":{
-                   "teller":"1",
-                   "nevner":"1"
-                },
-                "datoFra":"1337-01-01",
-                "eierId":"1010101",
-                "andelsnummer":"1",
-                "unit":{
-                   "_type":"Grunneiendom",
-                   "_namespace":"http://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/matrikkelenhet",
-                   "id":{
-                      "_type":"GrunneiendomId",
-                      "_namespace":"http://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/matrikkelenhet",
-                      "value":"10101010"
-                   },
-                   "oppdateringsdato":"2020-06-15T20:24:05.913000000+02:00",
-                   "versjonId":"4",
-                   "oppdatertAv":"smatmynd",
-                   "versjon":"1010101010101",
-                   "matrikkelnummer":{
-                      "kommuneId":"1337",
-                      "gardsnummer":"1",
-                      "bruksnummer":"1",
-                      "festenummer":"1",
-                      "seksjonsnummer":"0"
-                   },
-                   "etableringsdato":"1337-01-01",
-                   "historiskOppgittAreal":"0.0",
-                   "historiskArealkildeId":"0",
-                   "tinglyst":"true",
-                   "skyld":"10.10",
-                   "bruksnavn":"DEMO",
-                   "teigerForMatrikkelenhet":[
-                      {
-                         "oppdateringsdato":"2020-06-18T02:23:21.797000000+02:00",
-                         "versjonId":"2",
-                         "oppdatertAv":"smatmynd",
-                         "id":"101010101",
-                         "hovedteig":"false",
-                         "teigId":"01010101",
-                         "uuid":{
-                            "navnerom":"https://data.geonorge.no/matrikkel",
-                            "uuid":"1f1d116r-5e41-5613-a327-d01c01110bf0"
-                         }
-                      },
-                      {
-                         "oppdateringsdato":"2020-06-18T02:23:21.797000000+02:00",
-                         "versjonId":"2",
-                         "oppdatertAv":"smatmynd",
-                         "id":"101010101",
-                         "hovedteig":"true",
-                         "teigId":"01010101",
-                         "uuid":{
-                            "navnerom":"https://data.geonorge.no/matrikkel",
-                            "uuid":"1f1d116r-5e41-5613-a327-d01c01110bf0"
-                         }
-                      }
-                   ],
-                   "erSeksjonert":"false",
-                   "harAktiveFestegrunner":"false",
-                   "harAnmerketKlage":"false",
-                   "harRegistrertGrunnerverv":"false",
-                   "harRegistrertJordskifteKrevd":"false",
-                   "inngarISamlaFastEiendom":"false",
-                   "harGrunnforurensing":"false",
-                   "harKulturminne":"true",
-                   "harAvtaleGrensePunktfeste":"false",
-                   "harAvtaleStedbundenRettighet":"false",
-                   "utgatt":"false",
-                   "underSammenslaingBestar":"false",
-                   "underSammenslaingUtgar":"false",
-                   "oppmalingIkkeFullfort":"false",
-                   "grensepunktmerkingMangler":"false",
-                   "mangelMatrikkelforingskrav":"false",
-                   "nymatrikulert":"false",
-                   "etterML9BTilH":"false",
-                   "kommunalTilleggsdel":{
-                      "kartblader":"",
-                      "brukAvGrunnKodeId":"0",
-                      "kommentarer":"",
-                      "matrikkelenhetReferanser":"",
-                      "undereiendommerIds":""
-                   },
-                   "uuid":{
-                      "navnerom":"https://data.geonorge.no/matrikkel",
-                      "uuid":"1f1d116r-5e41-5613-a327-d01c01110bf0"
-                   }
-                }
-             }
-          ]
-       },
-       {
-          "_type":"JuridiskPerson",
-          "_namespace":"http://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/person",
-          "id":"1010101",
-          "oppdateringsdato":"2020-06-15T22:40:57.525000000+02:00",
-          "versjonId":"3",
-          "oppdatertAv":"smatmynd",
-          "versjon":"1010101010101",
-          "nummer":"0101010101",
-          "navn":"DEMO DEMOSEN",
-            "postadresse":{
-                "adresselinje2":"Demo vegen 3",
-                "postnummeromradeId":"101010101",
-                "landKodeId":"0000"
-            },
-            "uuid":{
-                "navnerom":"https://data.geonorge.no/matrikkel",
-                "uuid":"8f6420fd-3a70-5da4-aa11-b925s8bbec6b"
-             },
-          "forretningsadresse":{
-             "adresselinje1":"Demo vegen 3",
-             "postnummeromradeId":"101010101",
-             "landKodeId":"0000"
-          },
-          "organisasjonsformKode":{
-             "orgformNavn":"Demo",
-             "orgformKode":"DEMO"
-          },
-          "brreg":{
-             "organisasjonsnummer":"0101010101",
-             "navn":"DEMO DEMOSEN",
-             "organisasjonsform":{
-                "kode":"DEMO",
-                "beskrivelse":"Demo",
-                "_links":"https://data.brreg.no/enhetsregisteret/api/organisasjonsformer/KOMM"
-             },
-             "hjemmeside":"www.demo.demosen.no/",
-             "registreringsdatoEnhetsregisteret":"1337-01-01",
-             "registrertIMvaregisteret":true,
-             "frivilligMvaRegistrertBeskrivelser":"Utleier av bygg eller anlegg",
-             "naeringskode1":{
-                "beskrivelse":"Generell offentlig demo",
-                "kode":"10.110"
-             },
-             "antallAnsatte":"0101",
-             "forretningsadresse":{
-                "land":"Norge",
-                "landkode":"NO",
-                "postnummer":"1337",
-                "poststed":"DEMO",
-                "adresse":"Demo vegen 3",
-                "kommune":"DEMO",
-                "kommunenummer":"1377"
-             },
-             "institusjonellSektorkode":{
-                "kode":"1377",
-                "beskrivelse":"Demoforvaltningen"
-             },
-             "registrertIForetaksregisteret":false,
-             "registrertIStiftelsesregisteret":false,
-             "registrertIFrivillighetsregisteret":false,
-             "konkurs":false,
-             "underAvvikling":false,
-             "underTvangsavviklingEllerTvangsopplosning":false,
-             "maalform":"Bokmål",
-             "_links":"https://data.brreg.no/enhetsregisteret/api/enheter/101010101"
-          },
-          "ownerships":[
-             {
-                "_type":"JuridiskPersonTinglystEierforhold",
-                "_namespace":"http://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/matrikkelenhet",
-                "oppdateringsdato":"2020-06-17T22:16:57.579000000+02:00",
-                "versjonId":"3",
-                "oppdatertAv":"smatmynd",
-                "id":"10101010",
-                "kommuneId":"1337",
-                "eierforholdKodeId":"0",
-                "uuid":{
-                   "navnerom":"https://data.geonorge.no/matrikkel",
-                   "uuid":"f18381cc-234f-559a-a0cc-16bba7402c4b"
-                },
-                "andel":{
-                   "teller":"1",
-                   "nevner":"1"
-                },
-                "datoFra":"1337-01-01",
-                "eierId":"10101010",
-                "andelsnummer":"2",
-                "unit":{
-                   "_type":"Grunneiendom",
-                   "_namespace":"http://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/matrikkelenhet",
-                   "id":{
-                      "_type":"GrunneiendomId",
-                      "_namespace":"http://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/matrikkelenhet",
-                      "value":"10101010"
-                   },
-                   "oppdateringsdato":"2020-06-15T20:24:05.913000000+02:00",
-                   "versjonId":"3",
-                   "oppdatertAv":"smatmynd",
-                   "versjon":"1010101010101",
-                   "matrikkelnummer":{
-                      "kommuneId":"1337",
-                      "gardsnummer":"1",
-                      "bruksnummer":"1",
-                      "festenummer":"0",
-                      "seksjonsnummer":"0"
-                   },
-                   "historiskOppgittAreal":"0.0",
-                   "historiskArealkildeId":"0",
-                   "tinglyst":"true",
-                   "skyld":"1.01",
-                   "bruksnavn":"DEMO OG DEMO",
-                   "teigerForMatrikkelenhet":{
-                      "oppdateringsdato":"2020-06-18T02:02:28.528000000+02:00",
-                      "versjonId":"2",
-                      "oppdatertAv":"smatmynd",
-                      "id":"101010101",
-                      "hovedteig":"true",
-                      "teigId":"10101010",
-                      "uuid":{
-                         "navnerom":"https://data.geonorge.no/matrikkel",
-                         "uuid":"1118b04e-1111-5ee9-1111-a096d36111af"
-                      }
-                   },
-                   "erSeksjonert":"false",
-                   "harAktiveFestegrunner":"true",
-                   "harAnmerketKlage":"false",
-                   "harRegistrertGrunnerverv":"false",
-                   "harRegistrertJordskifteKrevd":"false",
-                   "inngarISamlaFastEiendom":"false",
-                   "harGrunnforurensing":"false",
-                   "harKulturminne":"false",
-                   "harAvtaleGrensePunktfeste":"false",
-                   "harAvtaleStedbundenRettighet":"false",
-                   "utgatt":"false",
-                   "underSammenslaingBestar":"false",
-                   "underSammenslaingUtgar":"false",
-                   "oppmalingIkkeFullfort":"false",
-                   "grensepunktmerkingMangler":"false",
-                   "mangelMatrikkelforingskrav":"false",
-                   "nymatrikulert":"false",
-                   "etterML9BTilH":"false",
-                   "kommunalTilleggsdel":{
-                      "kartblader":"",
-                      "brukAvGrunnKodeId":"0",
-                      "kommentarer":"",
-                      "matrikkelenhetReferanser":"",
-                      "undereiendommerIds":""
-                   },
-                   "uuid":{
-                      "navnerom":"https://data.geonorge.no/matrikkel",
-                      "uuid":"1118b04e-1111-5ee9-1111-a096d36111af"
-                   }
-                }
-             },
-             {
-                "_type":"JuridiskPersonTinglystEierforhold",
-                "_namespace":"http://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/matrikkelenhet",
-                "oppdateringsdato":"2020-06-17T22:16:57.579000000+02:00",
-                "versjonId":"5",
-                "oppdatertAv":"smatmynd",
-                "id":"10101010",
-                "kommuneId":"1337",
-                "eierforholdKodeId":"0",
-                "uuid":{
-                   "navnerom":"https://data.geonorge.no/matrikkel",
-                   "uuid":"1118b04e-1111-5ee9-1111-a096d36111af"
-                },
-                "andel":{
-                   "teller":"1",
-                   "nevner":"1"
-                },
-                "datoFra":"1337-01-01",
-                "eierId":"101010101",
-                "andelsnummer":"1",
-                "unit":{
-                   "_type":"Grunneiendom",
-                   "_namespace":"http://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/matrikkelenhet",
-                   "id":{
-                      "_type":"GrunneiendomId",
-                      "_namespace":"http://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/matrikkelenhet",
-                      "value":"10101010"
-                   },
-                   "oppdateringsdato":"2020-06-15T20:24:05.913000000+02:00",
-                   "versjonId":"1",
-                   "oppdatertAv":"smatmynd",
-                   "versjon":"1010101010101",
-                   "matrikkelnummer":{
-                      "kommuneId":"1337",
-                      "gardsnummer":"1",
-                      "bruksnummer":"1",
-                      "festenummer":"0",
-                      "seksjonsnummer":"0"
-                   },
-                   "etableringsdato":"1337-01-01",
-                   "historiskOppgittAreal":"0.0",
-                   "historiskArealkildeId":"0",
-                   "tinglyst":"true",
-                   "skyld":"0.1",
-                   "bruksnavn":"DEMO",
-                   "teigerForMatrikkelenhet":{
-                      "oppdateringsdato":"2020-06-18T01:50:36.204000000+02:00",
-                      "versjonId":"1",
-                      "oppdatertAv":"smatmynd",
-                      "id":"1010101010",
-                      "hovedteig":"true",
-                      "teigId":"101010101",
-                      "uuid":{
-                         "navnerom":"https://data.geonorge.no/matrikkel",
-                         "uuid":"1118b04e-1111-5ee9-1111-a096d36111af"
-                      }
-                   },
-                   "erSeksjonert":"false",
-                   "harAktiveFestegrunner":"false",
-                   "harAnmerketKlage":"false",
-                   "harRegistrertGrunnerverv":"false",
-                   "harRegistrertJordskifteKrevd":"false",
-                   "inngarISamlaFastEiendom":"false",
-                   "harGrunnforurensing":"false",
-                   "harKulturminne":"false",
-                   "harAvtaleGrensePunktfeste":"false",
-                   "harAvtaleStedbundenRettighet":"false",
-                   "utgatt":"false",
-                   "underSammenslaingBestar":"false",
-                   "underSammenslaingUtgar":"false",
-                   "oppmalingIkkeFullfort":"false",
-                   "grensepunktmerkingMangler":"false",
-                   "mangelMatrikkelforingskrav":"false",
-                   "nymatrikulert":"false",
-                   "etterML9BTilH":"false",
-                   "kommunalTilleggsdel":{
-                      "kartblader":"",
-                      "brukAvGrunnKodeId":"0",
-                      "kommentarer":"",
-                      "matrikkelenhetReferanser":"",
-                      "undereiendommerIds":""
-                   },
-                   "uuid":{
-                      "navnerom":"https://data.geonorge.no/matrikkel",
-                      "uuid":"1118b04e-1111-5ee9-1111-a096d36111af"
-                   }
-                }
-             }
-          ]
-       }
-    ],
-    "excludedOwners":[ //List of excluded owners. 
-        {
-        "_type":"JuridiskPerson",
-        "_namespace":"http://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/person",
-        "id":"1010101",
-        "oppdateringsdato":"2020-06-15T22:40:57.525000000+02:00",
-        "versjonId":"3",
-        "oppdatertAv":"smatmynd",
-        "versjon":"1010101010101",
-        "nummer":"0101010101",
-        "navn":"DEMO DEMOSEN",
-          "postadresse":{
-              "adresselinje2":"Demo vegen 3",
-              "postnummeromradeId":"101010101",
-              "landKodeId":"0000"
-          },
-          "uuid":{
-              "navnerom":"https://data.geonorge.no/matrikkel",
-              "uuid":"8f6420fd-3a70-5da4-aa11-b925s8bbec6b"
-           },
-        "forretningsadresse":{
-           "adresselinje1":"Demo vegen 3",
-           "postnummeromradeId":"101010101",
-           "landKodeId":"0000"
-        },
-        "organisasjonsformKode":{
-           "orgformNavn":"Demo",
-           "orgformKode":"DEMO"
-        },
-        "brreg":{
-           "organisasjonsnummer":"0101010101",
-           "navn":"DEMO DEMOSEN",
-           "organisasjonsform":{
-              "kode":"DEMO",
-              "beskrivelse":"Demo",
-              "_links":"https://data.brreg.no/enhetsregisteret/api/organisasjonsformer/KOMM"
-           },
-           "hjemmeside":"www.demo.demosen.no/",
-           "registreringsdatoEnhetsregisteret":"1337-01-01",
-           "registrertIMvaregisteret":true,
-           "frivilligMvaRegistrertBeskrivelser":"Utleier av bygg eller anlegg",
-           "naeringskode1":{
-              "beskrivelse":"Generell offentlig demo",
-              "kode":"10.110"
-           },
-           "antallAnsatte":"0101",
-           "forretningsadresse":{
-              "land":"Norge",
-              "landkode":"NO",
-              "postnummer":"1337",
-              "poststed":"DEMO",
-              "adresse":"Demo vegen 3",
-              "kommune":"DEMO",
-              "kommunenummer":"1377"
-           },
-           "institusjonellSektorkode":{
-              "kode":"1377",
-              "beskrivelse":"Demoforvaltningen"
-           },
-           "registrertIForetaksregisteret":false,
-           "registrertIStiftelsesregisteret":false,
-           "registrertIFrivillighetsregisteret":false,
-           "konkurs":false,
-           "underAvvikling":false,
-           "underTvangsavviklingEllerTvangsopplosning":false,
-           "maalform":"Bokmål",
-           "_links":"https://data.brreg.no/enhetsregisteret/api/enheter/101010101"
-        },
-          "ownerships":[
+   "title": "Demo",
+   "projectnumber": "Demo ",
+   "archivenumber": "22/00009",
+   //Valid archive number in p360
+   "template": {
+      //Selected template
+      "_id": "61d84dad786bdf965164c6fc",
+      "name": "Demo",
+      "description": "Mal for varsling til av demo",
+      "version": 10,
+      "enabled": true,
+      "documentDefinitionId": "brevmal",
+      "template": "base64",
+      "language": "nb",
+      "createdTimestamp": "2022-01-07T14:25:08.981Z",
+      "createdBy": "Demo",
+      "createdById": "00000000-0000-0000-0000-000000000000",
+      "modifiedTimestamp": "2022-01-27T08:46:01.524Z",
+      "modifiedBy": "Demo Demosen",
+      "modifiedById": "e134g211-ee11-7ece-b4a0-a13j7dc96313",
+      "__v": 0,
+      "modifiedByDepartment": "Teknologi og digitalisering",
+      "data": {
+         //Data from the template
+         "tittel": "Demo",
+         "beskrivelse av prosjekte": "Demo",
+         "fremdrift": "Demo",
+         "Regelverk": " § Demo"
+      }
+   },
+   "attachments": [
+      {
+         "name": "demo.png",
+         "type": "demo/png",
+         "size": 153617,
+         "lastModified": 1644922741231,
+         "lastModifiedDate": "[native Date Tue Feb 15 2022 11:59:01 GMT+0100 (sentraleuropeisk normaltid)]",
+         "data": "data:demo/png;base64"
+      }
+   ],
+   "owners": [
+      //List of owners
+      {
+         "_type": "FysiskPerson",
+         "_namespace": "https://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/person",
+         "id": "1010101",
+         "oppdateringsdato": "2020-06-15T22:40:57.525000000+02:00",
+         "versjonId": "3",
+         "oppdatertAv": "smatmynd",
+         "versjon": "1010101010101",
+         "nummer": "01010101010",
+         "navn": "DEMO DEMOSEN",
+         "postadresse": {
+            "adresselinje2": "Demo vegen 3",
+            "adresselinje3": "1337 Demo",
+            "postnummeromradeId": "101010101",
+            "landKodeId": "0000"
+         },
+         "uuid": {
+            "navnerom": "https://data.geonorge.no/matrikkel",
+            "uuid": "8f6420fd-3a70-5da4-aa11-b925s8bbec6b"
+         },
+         "etternavn": "DEMOSEN",
+         "fornavn": "DEMO",
+         "spesifisertRegTypeKodeId": "10",
+         "bostedsadresse": {
+            "kommunenummer": "1337",
+            "adressekode": "0000",
+            "husnummer": "1",
+            "gardsnummer": "0",
+            "bruksnummer": "0",
+            "festenummer": "0",
+            "undernummer": "0",
+            "postnummer": "1337"
+         },
+         "personStatusKodeId": "1",
+         "dsf": [
+            "Object"
+         ],
+         "ownerships": [
+            //What the given owner owns inside the polygon. 
             {
-                "_type":"JuridiskPersonTinglystEierforhold",
-                "_namespace":"http://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/matrikkelenhet",
-                "oppdateringsdato":"2020-06-17T22:16:57.579000000+02:00",
-                "versjonId":"3",
-                "oppdatertAv":"smatmynd",
-                "id":"10101010",
-                "kommuneId":"1337",
-                "eierforholdKodeId":"0",
-                "uuid":{
-                   "navnerom":"https://data.geonorge.no/matrikkel",
-                   "uuid":"f18381cc-234f-559a-a0cc-16bba7402c4b"
-                },
-                "andel":{
-                   "teller":"1",
-                   "nevner":"1"
-                },
-                "datoFra":"1337-01-01",
-                "eierId":"10101010",
-                "andelsnummer":"2",
-                "unit":{
-                   "_type":"Grunneiendom",
-                   "_namespace":"http://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/matrikkelenhet",
-                   "id":{
-                      "_type":"GrunneiendomId",
-                      "_namespace":"http://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/matrikkelenhet",
-                      "value":"10101010"
-                   },
-                   "oppdateringsdato":"2020-06-15T20:24:05.913000000+02:00",
-                   "versjonId":"3",
-                   "oppdatertAv":"smatmynd",
-                   "versjon":"1010101010101",
-                   "matrikkelnummer":{
-                      "kommuneId":"1337",
-                      "gardsnummer":"1",
-                      "bruksnummer":"1",
-                      "festenummer":"0",
-                      "seksjonsnummer":"0"
-                   },
-                   "historiskOppgittAreal":"0.0",
-                   "historiskArealkildeId":"0",
-                   "tinglyst":"true",
-                   "skyld":"1.01",
-                   "bruksnavn":"DEMO OG DEMO",
-                   "teigerForMatrikkelenhet":{
-                      "oppdateringsdato":"2020-06-18T02:02:28.528000000+02:00",
-                      "versjonId":"2",
-                      "oppdatertAv":"smatmynd",
-                      "id":"101010101",
-                      "hovedteig":"true",
-                      "teigId":"10101010",
-                      "uuid":{
-                         "navnerom":"https://data.geonorge.no/matrikkel",
-                         "uuid":"1118b04e-1111-5ee9-1111-a096d36111af"
-                      }
-                   },
-                   "erSeksjonert":"false",
-                   "harAktiveFestegrunner":"true",
-                   "harAnmerketKlage":"false",
-                   "harRegistrertGrunnerverv":"false",
-                   "harRegistrertJordskifteKrevd":"false",
-                   "inngarISamlaFastEiendom":"false",
-                   "harGrunnforurensing":"false",
-                   "harKulturminne":"false",
-                   "harAvtaleGrensePunktfeste":"false",
-                   "harAvtaleStedbundenRettighet":"false",
-                   "utgatt":"false",
-                   "underSammenslaingBestar":"false",
-                   "underSammenslaingUtgar":"false",
-                   "oppmalingIkkeFullfort":"false",
-                   "grensepunktmerkingMangler":"false",
-                   "mangelMatrikkelforingskrav":"false",
-                   "nymatrikulert":"false",
-                   "etterML9BTilH":"false",
-                   "kommunalTilleggsdel":{
-                      "kartblader":"",
-                      "brukAvGrunnKodeId":"0",
-                      "kommentarer":"",
-                      "matrikkelenhetReferanser":"",
-                      "undereiendommerIds":""
-                   },
-                   "uuid":{
-                      "navnerom":"https://data.geonorge.no/matrikkel",
-                      "uuid":"1118b04e-1111-5ee9-1111-a096d36111af"
-                   }
-                }
-             }
-          ],
-          "exclusionReason":"Forhåndsekskludert" //Why the owner was excluded. 
-       }
-    ],
-    "matrikkelUnitsWithoutOwners":[ //List of properties without owners in the matrikkel. 
+               "_type": "PersonTinglystEierforhold",
+               "_namespace": "https://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/matrikkelenhet",
+               "oppdateringsdato": "2020-06-17T22:16:57.579000000+02:00",
+               "versjonId": "3",
+               "oppdatertAv": "smatmynd",
+               "id": "10101010",
+               "kommuneId": "1337",
+               "eierforholdKodeId": "0",
+               "uuid": {
+                  "navnerom": "https://data.geonorge.no/matrikkel",
+                  "uuid": "8a5ddad5-9666-5d96-8323-9c0db83f3168"
+               },
+               "andel": {
+                  "teller": "1",
+                  "nevner": "1"
+               },
+               "datoFra": "1337-01-01",
+               "eierId": "1010101",
+               "andelsnummer": "1",
+               "unit": {
+                  "_type": "Grunneiendom",
+                  "_namespace": "https://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/matrikkelenhet",
+                  "id": {
+                     "_type": "GrunneiendomId",
+                     "_namespace": "https://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/matrikkelenhet",
+                     "value": "10101010"
+                  },
+                  "oppdateringsdato": "2020-06-15T20:24:05.913000000+02:00",
+                  "versjonId": "4",
+                  "oppdatertAv": "smatmynd",
+                  "versjon": "1010101010101",
+                  "matrikkelnummer": {
+                     "kommuneId": "1337",
+                     "gardsnummer": "1",
+                     "bruksnummer": "1",
+                     "festenummer": "1",
+                     "seksjonsnummer": "0"
+                  },
+                  "etableringsdato": "1337-01-01",
+                  "historiskOppgittAreal": "0.0",
+                  "historiskArealkildeId": "0",
+                  "tinglyst": "true",
+                  "skyld": "10.10",
+                  "bruksnavn": "DEMO",
+                  "teigerForMatrikkelenhet": [
+                     {
+                        "oppdateringsdato": "2020-06-18T02:23:21.797000000+02:00",
+                        "versjonId": "2",
+                        "oppdatertAv": "smatmynd",
+                        "id": "101010101",
+                        "hovedteig": "false",
+                        "teigId": "01010101",
+                        "uuid": {
+                           "navnerom": "https://data.geonorge.no/matrikkel",
+                           "uuid": "1f1d116r-5e41-5613-a327-d01c01110bf0"
+                        }
+                     },
+                     {
+                        "oppdateringsdato": "2020-06-18T02:23:21.797000000+02:00",
+                        "versjonId": "2",
+                        "oppdatertAv": "smatmynd",
+                        "id": "101010101",
+                        "hovedteig": "true",
+                        "teigId": "01010101",
+                        "uuid": {
+                           "navnerom": "https://data.geonorge.no/matrikkel",
+                           "uuid": "1f1d116r-5e41-5613-a327-d01c01110bf0"
+                        }
+                     }
+                  ],
+                  "erSeksjonert": "false",
+                  "harAktiveFestegrunner": "false",
+                  "harAnmerketKlage": "false",
+                  "harRegistrertGrunnerverv": "false",
+                  "harRegistrertJordskifteKrevd": "false",
+                  "inngarISamlaFastEiendom": "false",
+                  "harGrunnforurensing": "false",
+                  "harKulturminne": "true",
+                  "harAvtaleGrensePunktfeste": "false",
+                  "harAvtaleStedbundenRettighet": "false",
+                  "utgatt": "false",
+                  "underSammenslaingBestar": "false",
+                  "underSammenslaingUtgar": "false",
+                  "oppmalingIkkeFullfort": "false",
+                  "grensepunktmerkingMangler": "false",
+                  "mangelMatrikkelforingskrav": "false",
+                  "nymatrikulert": "false",
+                  "etterML9BTilH": "false",
+                  "kommunalTilleggsdel": {
+                     "kartblader": "",
+                     "brukAvGrunnKodeId": "0",
+                     "kommentarer": "",
+                     "matrikkelenhetReferanser": "",
+                     "undereiendommerIds": ""
+                  },
+                  "uuid": {
+                     "navnerom": "https://data.geonorge.no/matrikkel",
+                     "uuid": "1f1d116r-5e41-5613-a327-d01c01110bf0"
+                  }
+               }
+            }
+         ]
+      },
+      {
+         "_type": "JuridiskPerson",
+         "_namespace": "https://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/person",
+         "id": "1010101",
+         "oppdateringsdato": "2020-06-15T22:40:57.525000000+02:00",
+         "versjonId": "3",
+         "oppdatertAv": "smatmynd",
+         "versjon": "1010101010101",
+         "nummer": "0101010101",
+         "navn": "DEMO DEMOSEN",
+         "postadresse": {
+            "adresselinje2": "Demo vegen 3",
+            "postnummeromradeId": "101010101",
+            "landKodeId": "0000"
+         },
+         "uuid": {
+            "navnerom": "https://data.geonorge.no/matrikkel",
+            "uuid": "8f6420fd-3a70-5da4-aa11-b925s8bbec6b"
+         },
+         "forretningsadresse": {
+            "adresselinje1": "Demo vegen 3",
+            "postnummeromradeId": "101010101",
+            "landKodeId": "0000"
+         },
+         "organisasjonsformKode": {
+            "orgformNavn": "Demo",
+            "orgformKode": "DEMO"
+         },
+         "brreg": {
+            "organisasjonsnummer": "0101010101",
+            "navn": "DEMO DEMOSEN",
+            "organisasjonsform": {
+               "kode": "DEMO",
+               "beskrivelse": "Demo",
+               "_links": "https://data.brreg.no/enhetsregisteret/api/organisasjonsformer/KOMM"
+            },
+            "hjemmeside": "www.demo.demosen.no/",
+            "registreringsdatoEnhetsregisteret": "1337-01-01",
+            "registrertIMvaregisteret": true,
+            "frivilligMvaRegistrertBeskrivelser": "Utleier av bygg eller anlegg",
+            "naeringskode1": {
+               "beskrivelse": "Generell offentlig demo",
+               "kode": "10.110"
+            },
+            "antallAnsatte": "0101",
+            "forretningsadresse": {
+               "land": "Norge",
+               "landkode": "NO",
+               "postnummer": "1337",
+               "poststed": "DEMO",
+               "adresse": "Demo vegen 3",
+               "kommune": "DEMO",
+               "kommunenummer": "1377"
+            },
+            "institusjonellSektorkode": {
+               "kode": "1377",
+               "beskrivelse": "Demoforvaltningen"
+            },
+            "registrertIForetaksregisteret": false,
+            "registrertIStiftelsesregisteret": false,
+            "registrertIFrivillighetsregisteret": false,
+            "konkurs": false,
+            "underAvvikling": false,
+            "underTvangsavviklingEllerTvangsopplosning": false,
+            "maalform": "Bokmål",
+            "_links": "https://data.brreg.no/enhetsregisteret/api/enheter/101010101"
+         },
+         "ownerships": [
+            {
+               "_type": "JuridiskPersonTinglystEierforhold",
+               "_namespace": "https://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/matrikkelenhet",
+               "oppdateringsdato": "2020-06-17T22:16:57.579000000+02:00",
+               "versjonId": "3",
+               "oppdatertAv": "smatmynd",
+               "id": "10101010",
+               "kommuneId": "1337",
+               "eierforholdKodeId": "0",
+               "uuid": {
+                  "navnerom": "https://data.geonorge.no/matrikkel",
+                  "uuid": "f18381cc-234f-559a-a0cc-16bba7402c4b"
+               },
+               "andel": {
+                  "teller": "1",
+                  "nevner": "1"
+               },
+               "datoFra": "1337-01-01",
+               "eierId": "10101010",
+               "andelsnummer": "2",
+               "unit": {
+                  "_type": "Grunneiendom",
+                  "_namespace": "https://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/matrikkelenhet",
+                  "id": {
+                     "_type": "GrunneiendomId",
+                     "_namespace": "https://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/matrikkelenhet",
+                     "value": "10101010"
+                  },
+                  "oppdateringsdato": "2020-06-15T20:24:05.913000000+02:00",
+                  "versjonId": "3",
+                  "oppdatertAv": "smatmynd",
+                  "versjon": "1010101010101",
+                  "matrikkelnummer": {
+                     "kommuneId": "1337",
+                     "gardsnummer": "1",
+                     "bruksnummer": "1",
+                     "festenummer": "0",
+                     "seksjonsnummer": "0"
+                  },
+                  "historiskOppgittAreal": "0.0",
+                  "historiskArealkildeId": "0",
+                  "tinglyst": "true",
+                  "skyld": "1.01",
+                  "bruksnavn": "DEMO OG DEMO",
+                  "teigerForMatrikkelenhet": {
+                     "oppdateringsdato": "2020-06-18T02:02:28.528000000+02:00",
+                     "versjonId": "2",
+                     "oppdatertAv": "smatmynd",
+                     "id": "101010101",
+                     "hovedteig": "true",
+                     "teigId": "10101010",
+                     "uuid": {
+                        "navnerom": "https://data.geonorge.no/matrikkel",
+                        "uuid": "1118b04e-1111-5ee9-1111-a096d36111af"
+                     }
+                  },
+                  "erSeksjonert": "false",
+                  "harAktiveFestegrunner": "true",
+                  "harAnmerketKlage": "false",
+                  "harRegistrertGrunnerverv": "false",
+                  "harRegistrertJordskifteKrevd": "false",
+                  "inngarISamlaFastEiendom": "false",
+                  "harGrunnforurensing": "false",
+                  "harKulturminne": "false",
+                  "harAvtaleGrensePunktfeste": "false",
+                  "harAvtaleStedbundenRettighet": "false",
+                  "utgatt": "false",
+                  "underSammenslaingBestar": "false",
+                  "underSammenslaingUtgar": "false",
+                  "oppmalingIkkeFullfort": "false",
+                  "grensepunktmerkingMangler": "false",
+                  "mangelMatrikkelforingskrav": "false",
+                  "nymatrikulert": "false",
+                  "etterML9BTilH": "false",
+                  "kommunalTilleggsdel": {
+                     "kartblader": "",
+                     "brukAvGrunnKodeId": "0",
+                     "kommentarer": "",
+                     "matrikkelenhetReferanser": "",
+                     "undereiendommerIds": ""
+                  },
+                  "uuid": {
+                     "navnerom": "https://data.geonorge.no/matrikkel",
+                     "uuid": "1118b04e-1111-5ee9-1111-a096d36111af"
+                  }
+               }
+            },
+            {
+               "_type": "JuridiskPersonTinglystEierforhold",
+               "_namespace": "https://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/matrikkelenhet",
+               "oppdateringsdato": "2020-06-17T22:16:57.579000000+02:00",
+               "versjonId": "5",
+               "oppdatertAv": "smatmynd",
+               "id": "10101010",
+               "kommuneId": "1337",
+               "eierforholdKodeId": "0",
+               "uuid": {
+                  "navnerom": "https://data.geonorge.no/matrikkel",
+                  "uuid": "1118b04e-1111-5ee9-1111-a096d36111af"
+               },
+               "andel": {
+                  "teller": "1",
+                  "nevner": "1"
+               },
+               "datoFra": "1337-01-01",
+               "eierId": "101010101",
+               "andelsnummer": "1",
+               "unit": {
+                  "_type": "Grunneiendom",
+                  "_namespace": "https://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/matrikkelenhet",
+                  "id": {
+                     "_type": "GrunneiendomId",
+                     "_namespace": "https://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/matrikkelenhet",
+                     "value": "10101010"
+                  },
+                  "oppdateringsdato": "2020-06-15T20:24:05.913000000+02:00",
+                  "versjonId": "1",
+                  "oppdatertAv": "smatmynd",
+                  "versjon": "1010101010101",
+                  "matrikkelnummer": {
+                     "kommuneId": "1337",
+                     "gardsnummer": "1",
+                     "bruksnummer": "1",
+                     "festenummer": "0",
+                     "seksjonsnummer": "0"
+                  },
+                  "etableringsdato": "1337-01-01",
+                  "historiskOppgittAreal": "0.0",
+                  "historiskArealkildeId": "0",
+                  "tinglyst": "true",
+                  "skyld": "0.1",
+                  "bruksnavn": "DEMO",
+                  "teigerForMatrikkelenhet": {
+                     "oppdateringsdato": "2020-06-18T01:50:36.204000000+02:00",
+                     "versjonId": "1",
+                     "oppdatertAv": "smatmynd",
+                     "id": "1010101010",
+                     "hovedteig": "true",
+                     "teigId": "101010101",
+                     "uuid": {
+                        "navnerom": "https://data.geonorge.no/matrikkel",
+                        "uuid": "1118b04e-1111-5ee9-1111-a096d36111af"
+                     }
+                  },
+                  "erSeksjonert": "false",
+                  "harAktiveFestegrunner": "false",
+                  "harAnmerketKlage": "false",
+                  "harRegistrertGrunnerverv": "false",
+                  "harRegistrertJordskifteKrevd": "false",
+                  "inngarISamlaFastEiendom": "false",
+                  "harGrunnforurensing": "false",
+                  "harKulturminne": "false",
+                  "harAvtaleGrensePunktfeste": "false",
+                  "harAvtaleStedbundenRettighet": "false",
+                  "utgatt": "false",
+                  "underSammenslaingBestar": "false",
+                  "underSammenslaingUtgar": "false",
+                  "oppmalingIkkeFullfort": "false",
+                  "grensepunktmerkingMangler": "false",
+                  "mangelMatrikkelforingskrav": "false",
+                  "nymatrikulert": "false",
+                  "etterML9BTilH": "false",
+                  "kommunalTilleggsdel": {
+                     "kartblader": "",
+                     "brukAvGrunnKodeId": "0",
+                     "kommentarer": "",
+                     "matrikkelenhetReferanser": "",
+                     "undereiendommerIds": ""
+                  },
+                  "uuid": {
+                     "navnerom": "https://data.geonorge.no/matrikkel",
+                     "uuid": "1118b04e-1111-5ee9-1111-a096d36111af"
+                  }
+               }
+            }
+         ]
+      }
+   ],
+   "excludedOwners": [
+      //List of excluded owners. 
+      {
+         "_type": "JuridiskPerson",
+         "_namespace": "https://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/person",
+         "id": "1010101",
+         "oppdateringsdato": "2020-06-15T22:40:57.525000000+02:00",
+         "versjonId": "3",
+         "oppdatertAv": "smatmynd",
+         "versjon": "1010101010101",
+         "nummer": "0101010101",
+         "navn": "DEMO DEMOSEN",
+         "postadresse": {
+            "adresselinje2": "Demo vegen 3",
+            "postnummeromradeId": "101010101",
+            "landKodeId": "0000"
+         },
+         "uuid": {
+            "navnerom": "https://data.geonorge.no/matrikkel",
+            "uuid": "8f6420fd-3a70-5da4-aa11-b925s8bbec6b"
+         },
+         "forretningsadresse": {
+            "adresselinje1": "Demo vegen 3",
+            "postnummeromradeId": "101010101",
+            "landKodeId": "0000"
+         },
+         "organisasjonsformKode": {
+            "orgformNavn": "Demo",
+            "orgformKode": "DEMO"
+         },
+         "brreg": {
+            "organisasjonsnummer": "0101010101",
+            "navn": "DEMO DEMOSEN",
+            "organisasjonsform": {
+               "kode": "DEMO",
+               "beskrivelse": "Demo",
+               "_links": "https://data.brreg.no/enhetsregisteret/api/organisasjonsformer/KOMM"
+            },
+            "hjemmeside": "www.demo.demosen.no/",
+            "registreringsdatoEnhetsregisteret": "1337-01-01",
+            "registrertIMvaregisteret": true,
+            "frivilligMvaRegistrertBeskrivelser": "Utleier av bygg eller anlegg",
+            "naeringskode1": {
+               "beskrivelse": "Generell offentlig demo",
+               "kode": "10.110"
+            },
+            "antallAnsatte": "0101",
+            "forretningsadresse": {
+               "land": "Norge",
+               "landkode": "NO",
+               "postnummer": "1337",
+               "poststed": "DEMO",
+               "adresse": "Demo vegen 3",
+               "kommune": "DEMO",
+               "kommunenummer": "1377"
+            },
+            "institusjonellSektorkode": {
+               "kode": "1377",
+               "beskrivelse": "Demoforvaltningen"
+            },
+            "registrertIForetaksregisteret": false,
+            "registrertIStiftelsesregisteret": false,
+            "registrertIFrivillighetsregisteret": false,
+            "konkurs": false,
+            "underAvvikling": false,
+            "underTvangsavviklingEllerTvangsopplosning": false,
+            "maalform": "Bokmål",
+            "_links": "https://data.brreg.no/enhetsregisteret/api/enheter/101010101"
+         },
+         "ownerships": [
+            {
+               "_type": "JuridiskPersonTinglystEierforhold",
+               "_namespace": "https://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/matrikkelenhet",
+               "oppdateringsdato": "2020-06-17T22:16:57.579000000+02:00",
+               "versjonId": "3",
+               "oppdatertAv": "smatmynd",
+               "id": "10101010",
+               "kommuneId": "1337",
+               "eierforholdKodeId": "0",
+               "uuid": {
+                  "navnerom": "https://data.geonorge.no/matrikkel",
+                  "uuid": "f18381cc-234f-559a-a0cc-16bba7402c4b"
+               },
+               "andel": {
+                  "teller": "1",
+                  "nevner": "1"
+               },
+               "datoFra": "1337-01-01",
+               "eierId": "10101010",
+               "andelsnummer": "2",
+               "unit": {
+                  "_type": "Grunneiendom",
+                  "_namespace": "https://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/matrikkelenhet",
+                  "id": {
+                     "_type": "GrunneiendomId",
+                     "_namespace": "https://matrikkel.statkart.no/matrikkelapi/wsapi/v1/domain/matrikkelenhet",
+                     "value": "10101010"
+                  },
+                  "oppdateringsdato": "2020-06-15T20:24:05.913000000+02:00",
+                  "versjonId": "3",
+                  "oppdatertAv": "smatmynd",
+                  "versjon": "1010101010101",
+                  "matrikkelnummer": {
+                     "kommuneId": "1337",
+                     "gardsnummer": "1",
+                     "bruksnummer": "1",
+                     "festenummer": "0",
+                     "seksjonsnummer": "0"
+                  },
+                  "historiskOppgittAreal": "0.0",
+                  "historiskArealkildeId": "0",
+                  "tinglyst": "true",
+                  "skyld": "1.01",
+                  "bruksnavn": "DEMO OG DEMO",
+                  "teigerForMatrikkelenhet": {
+                     "oppdateringsdato": "2020-06-18T02:02:28.528000000+02:00",
+                     "versjonId": "2",
+                     "oppdatertAv": "smatmynd",
+                     "id": "101010101",
+                     "hovedteig": "true",
+                     "teigId": "10101010",
+                     "uuid": {
+                        "navnerom": "https://data.geonorge.no/matrikkel",
+                        "uuid": "1118b04e-1111-5ee9-1111-a096d36111af"
+                     }
+                  },
+                  "erSeksjonert": "false",
+                  "harAktiveFestegrunner": "true",
+                  "harAnmerketKlage": "false",
+                  "harRegistrertGrunnerverv": "false",
+                  "harRegistrertJordskifteKrevd": "false",
+                  "inngarISamlaFastEiendom": "false",
+                  "harGrunnforurensing": "false",
+                  "harKulturminne": "false",
+                  "harAvtaleGrensePunktfeste": "false",
+                  "harAvtaleStedbundenRettighet": "false",
+                  "utgatt": "false",
+                  "underSammenslaingBestar": "false",
+                  "underSammenslaingUtgar": "false",
+                  "oppmalingIkkeFullfort": "false",
+                  "grensepunktmerkingMangler": "false",
+                  "mangelMatrikkelforingskrav": "false",
+                  "nymatrikulert": "false",
+                  "etterML9BTilH": "false",
+                  "kommunalTilleggsdel": {
+                     "kartblader": "",
+                     "brukAvGrunnKodeId": "0",
+                     "kommentarer": "",
+                     "matrikkelenhetReferanser": "",
+                     "undereiendommerIds": ""
+                  },
+                  "uuid": {
+                     "navnerom": "https://data.geonorge.no/matrikkel",
+                     "uuid": "1118b04e-1111-5ee9-1111-a096d36111af"
+                  }
+               }
+            }
+         ],
+         "exclusionReason": "Forhåndsekskludert"
+         //Why the owner was excluded. 
+      }
+   ],
+   "matrikkelUnitsWithoutOwners": [
+      //List of properties without owners in the matrikkel. 
       "Array"
-    ],
-    "stats":{ //Basic stat from the polygon(s).
-       "affectedCount":1,
-       "area":null,
-       "totalOwners":1,
-       "privateOwners":1,
-       "businessOwners":1,
-       "units":[
-          
-       ]
-    },
-    "polygons":{
-       "extremes":{
-          "north":[
-             512590.93,
-             6572724.996
-          ],
-          "west":[
-             511851.99,
-             6572411.712
-          ],
-          "east":[
-             514608.599,
-             6572177.314
-          ],
-          "south":[
-             514508.099,
-             6572073.138
-          ]
-       },
-       "area":1037662459880256.2,
-       "polygons":[
-          {
-             "EPSG":"5972",
-             "metadata":{
-                "type":"LWPOLYLINE",
-                "handle":"F40",
-                "ownerHandle":"1F",
-                "layer":"0",
-                "shape":true,
-                "hasContinuousLinetypePattern":true,
-                "extendedData":{
-                   "applicationName":"DEMO",
-                   "customStrings":[
-                      "Array"
-                   ]
-                }
-             },
-             "extremes":{
-                "north":[
-                   512590.93,
-                   6572724.996
-                ],
-                "west":[
-                   511851.99,
-                   6572411.712
-                ],
-                "east":[
-                   514608.599,
-                   6572177.314
-                ],
-                "south":[
-                   514508.099,
-                   6572073.138
-                ]
-             },
-             "center":[
-                513230.29449999996,
-                6572399.067
-             ],
-             "area":1037662459880256.2,
-             "vertices":[
-                [
-                   512039.725,
-                   6572426.734
-                ],
-                [
-                   512038.389,
-                   6572459.488
-                ],                
-                [
-                   512039.725,
-                   6572426.734
-                ]
-             ]
-          }
-       ],
-       "EPSG":"5972",
-       "center":[
-          513230.29449999996,
-          6572399.067
-       ]
-    },
-    "matrikkelEnheter":[
-       
-    ]
+   ],
+   "stats": {
+      //Basic stat from the polygon(s).
+      "affectedCount": 1,
+      "area": null,
+      "totalOwners": 1,
+      "privateOwners": 1,
+      "businessOwners": 1,
+      "units": [
+      ]
+   },
+   "polygons": {
+      "extremes": {
+         "north": [
+            512590.93,
+            6572724.996
+         ],
+         "west": [
+            511851.99,
+            6572411.712
+         ],
+         "east": [
+            514608.599,
+            6572177.314
+         ],
+         "south": [
+            514508.099,
+            6572073.138
+         ]
+      },
+      "area": 1037662459880256.2,
+      "polygons": [
+         {
+            "EPSG": "5972",
+            "metadata": {
+               "type": "LWPOLYLINE",
+               "handle": "F40",
+               "ownerHandle": "1F",
+               "layer": "0",
+               "shape": true,
+               "hasContinuousLinetypePattern": true,
+               "extendedData": {
+                  "applicationName": "DEMO",
+                  "customStrings": [
+                     "Array"
+                  ]
+               }
+            },
+            "extremes": {
+               "north": [
+                  512590.93,
+                  6572724.996
+               ],
+               "west": [
+                  511851.99,
+                  6572411.712
+               ],
+               "east": [
+                  514608.599,
+                  6572177.314
+               ],
+               "south": [
+                  514508.099,
+                  6572073.138
+               ]
+            },
+            "center": [
+               513230.29449999996,
+               6572399.067
+            ],
+            "area": 1037662459880256.2,
+            "vertices": [
+               [
+                  512039.725,
+                  6572426.734
+               ],
+               [
+                  512038.389,
+                  6572459.488
+               ],
+               [
+                  512039.725,
+                  6572426.734
+               ]
+            ]
+         }
+      ],
+      "EPSG": "5972",
+      "center": [
+         513230.29449999996,
+         6572399.067
+      ]
+   },
+   "matrikkelEnheter": [
+   ]
 }
 
 ```
@@ -1143,8 +1145,8 @@ This endpoint is used to post a new template to the mongoDB
     "name": "Demo",
     "description": "Brukes om det skal utføres en demo",
     "documentDefinitionId": "brevmal", //Baseline for the template. 
-    "template": "base64"
-    "language": "nb", //Standard nb (bokmål), other allowed values nn (nynorsk) and en (english)
+    "template": "base64",
+    "language": "nb" //Standard nb (bokmål), other allowed values nn (nynorsk) and en (english)
 }
 ```
 
@@ -1154,7 +1156,7 @@ This endpoint is used to post a new template to the mongoDB
 
 This endpoint is used to edit a given dispatch.
 
-If status='approved' you're not allowed to edit anythig except the status of the dispatch object. 
+If status='approved' you're not allowed to edit anything except the status of the dispatch object. 
 If status='completed' you're not allowed to edit the dispatch object at all. 
 
 Fields that cannot be edited.
