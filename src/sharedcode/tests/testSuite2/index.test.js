@@ -1,16 +1,16 @@
 // Endpoints
-const { postTemplate } = require("../../../func-posttemplate/index");
-const { getTemplateById } = require("../../../func-gettemplatebyid/index");
-const { getTemplates } = require("../../../func-gettemplates/index");
-const { putTemplates } = require("../../../func-puttemplates/index");
-const { postDispatches } = require("../../../func-postdispatches/index");
-const { getDispatchById } = require("../../../func-getdispatchbyid/index");
-// const { getDispatches } = require('../../../func-getdispatches/index')
-const { editDispatches } = require("../../../func-editdispatches/index");
-// const { getReadyDispatches } = require('../../../func-getreadydispatches/index')
-const { completeDispatch } = require("../../../func-completedispatch/index");
-const { getMatrikkel } = require("../../../func-getmatrikkel/index");
-const { getBlob } = require("../../../func-getblob");
+const { postTemplate } = require("../../../functions/posttemplate");
+const { getTemplateById } = require("../../../functions/gettemplatebyid");
+const { getTemplates } = require("../../../functions/gettemplates");
+const { putTemplates } = require("../../../functions/puttemplates");
+const { postDispatches } = require("../../../functions/postdispatches");
+const { getDispatchById } = require("../../../functions/getdispatchbyid");
+// const { getDispatches } = require('../../../functions/getdispatches')
+const { editDispatches } = require("../../../functions/editdispatches");
+// const { getReadyDispatches } = require('../../../functions/getreadydispatchesV2Dev')
+const { completeDispatch } = require("../../../functions/completedispatch");
+const { getMatrikkel } = require("../../../functions/getmatrikkel");
+const { getBlob } = require("../../../functions/getblob");
 
 // Valid test cases
 const validTemplate = require("../testCases/validCases/post_template");

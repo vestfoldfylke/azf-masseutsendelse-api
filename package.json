@@ -12,7 +12,7 @@
 	"engines": {
 		"node": ">=18"
 	},
-	"main": "func*/index.js",
+	"main": "src/functions/*.js",
 	"dependencies": {
 		"@azure/functions": "^4.10.0",
 		"@azure/identity": "^4.13.0",
