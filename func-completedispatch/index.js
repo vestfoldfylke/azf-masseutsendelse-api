@@ -1,28 +1,38 @@
-const Dispatches = require('../sharedcode/models/dispatches.js')
-const getDb = require('../sharedcode/connections/masseutsendelseDB.js')
-const HTTPError = require('../sharedcode/vtfk-errors/httperror')
-const { azfHandleResponse, azfHandleError } = require('@vtfk/responsehandlers')
+const { logger } = require("@vestfoldfylke/loglady");
+const { app } = require("@azure/functions");
+const getDb = require("../sharedcode/connections/masseutsendelseDB.js");
+const Dispatches = require("../sharedcode/models/dispatches.js");
+const { errorResponse, response } = require("../sharedcode/response/response-handler");
+const HTTPError = require("../sharedcode/vtfk-errors/httperror");
 
-module.exports = async function (context, req) {
+const completeDispatch = async (req) => {
   try {
     // Get the ID from the request
-    const id = context.bindingData.id
-    if (!id) throw new HTTPError(400, 'You cannot complete a dispatch without providing an id')
+    const id = req.params.id;
+    if (!id) {
+      return new HTTPError(400, "You cannot complete a dispatch without providing an id").toHTTPResponse();
+    }
 
     // Authentication / Authorization
-    const requestor = await require('../sharedcode/auth/auth').auth(req)
+    const requestor = await require("../sharedcode/auth/auth").auth(req);
 
-    // Await the DB conection
-    await getDb()
+    // Await the DB connection
+    await getDb();
 
-    // Get the existing disptach object
-    const existingDispatch = await Dispatches.findById(id).lean()
-    if (!existingDispatch) throw new HTTPError(404, `Dispatch with id ${id} could not be found`)
-    if (existingDispatch.status !== 'approved') throw new HTTPError(404, 'Cannot complete a dispatch that is not approved')
+    // Get the existing dispatch object
+    const existingDispatch = await Dispatches.findById(id).lean();
+    if (!existingDispatch) {
+      logger.error("Dispatch with Id {Id} could not be found", id);
+      return new HTTPError(404, `Dispatch with id ${id} could not be found`).toHTTPResponse();
+    }
+    if (existingDispatch.status !== "approved") {
+      logger.error("Dispatch with Id {Id} cannot be completed since it's not approved ({Status})", id, existingDispatch.status);
+      return new HTTPError(400, "Cannot complete a dispatch that is not approved").toHTTPResponse();
+    }
 
     // Set completed information
     const completedData = {
-      status: 'completed',
+      status: "completed",
       owners: [],
       excludedOwners: [],
       matrikkelUnitsWithoutOwners: [],
@@ -31,14 +41,27 @@ module.exports = async function (context, req) {
       modifiedByEmail: requestor.email,
       modifiedByDepartment: requestor.department,
       modifiedById: requestor.id
-    }
-    if (req.body?.e18Id) completedData.e18Id = req.body.e18Id
+    };
+
+    const requestBody = await req.json();
+    if (requestBody?.e18Id) completedData.e18Id = requestBody.e18Id;
 
     // Update the dispatch
-    const updatedDispatch = await Dispatches.findByIdAndUpdate(id, completedData, { new: true })
+    const updatedDispatch = await Dispatches.findByIdAndUpdate(id, completedData, { new: true });
+    logger.info("Dispatch with Id {Id} has been completed by {User}", id, requestor.email);
 
-    return await azfHandleResponse(updatedDispatch, context, req)
+    return response(updatedDispatch);
   } catch (err) {
-    return await azfHandleError(err, context, req)
+    logger.errorException(err, "Failed to put completed dispatch");
+    return errorResponse(err, "Failed to put completed dispatch", 400);
   }
-}
+};
+
+app.http("completeDispatch", {
+  authLevel: "anonymous",
+  handler: completeDispatch,
+  methods: ["PUT"],
+  route: "dispatches/{id}/complete"
+});
+
+module.exports = { completeDispatch };

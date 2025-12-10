@@ -1,7 +1,4 @@
-/*
-  Import dependencies
-*/
-const azuread = require('./lib/azuread')
+const azureAd = require("./lib/azuread");
 /*
   Auth function
 */
@@ -10,22 +7,43 @@ const azuread = require('./lib/azuread')
  * @param {object} req Azure function request
  * @returns
  */
-async function auth (req) {
-  const requestor = {}
-  if (req.headers.authorization) {
-    const token = await azuread(req.headers.authorization)
-    if (token && token.name) requestor.name = token.name
-    if (token && token.oid) requestor.id = token.oid
-    // Department is fetched with graph, not from access or id token from auth process.
-    if (token && token.department) requestor.department = token.department
-    if (token && token.upn) requestor.email = token.upn
-  } else {
-    requestor.name = 'timetrigger'
-    requestor.id = 'timetrigger'
-    requestor.department = 'timetrigger'
-    requestor.email = 'timetrigger@telemarkfylke.no'
+async function auth(req) {
+  const authValue = req.headers.get("authorization") || req.headers.get("Authorization");
+  if (!authValue) {
+    if (process.env.NODE_ENV?.toLowerCase() !== "test") {
+      throw new Error("No authorization header was provided");
+    }
+
+    // Return a default timetrigger user in test mode since no auth header is provided
+    return {
+      name: "timetrigger",
+      id: "timetrigger",
+      department: "timetrigger",
+      email: "timetrigger@telemarkfylke.no"
+    };
   }
-  return requestor
+
+  const token = await azureAd(authValue);
+  if (!token) {
+    return {};
+  }
+
+  const requestor = {};
+  if (token.name) {
+    requestor.name = token.name;
+  }
+  if (token.oid) {
+    requestor.id = token.oid;
+  }
+  // Department is fetched with graph, not from access or id token from auth process.
+  if (token.department) {
+    requestor.department = token.department;
+  }
+  if (token.upn) {
+    requestor.email = token.upn;
+  }
+
+  return requestor;
 }
 
-module.exports.auth = auth
+module.exports.auth = auth;

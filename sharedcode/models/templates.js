@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const templateSchema = new mongoose.Schema({
   _Id: {
@@ -35,7 +35,7 @@ const templateSchema = new mongoose.Schema({
   },
   language: {
     type: String,
-    default: 'nb'
+    default: "nb"
   },
   createdTimestamp: {
     type: Date,
@@ -44,12 +44,12 @@ const templateSchema = new mongoose.Schema({
   },
   createdBy: {
     type: String,
-    default: 'unknown',
+    default: "unknown",
     required: true
   },
   createdById: {
     type: String,
-    default: '00000000-0000-0000-0000-000000000000',
+    default: "00000000-0000-0000-0000-000000000000",
     required: true
   },
   createdByDepartment: {
@@ -62,19 +62,19 @@ const templateSchema = new mongoose.Schema({
   },
   modifiedBy: {
     type: String,
-    default: 'unknown',
+    default: "unknown",
     required: true
   },
   modifiedById: {
     type: String,
-    default: '00000000-0000-0000-0000-000000000000',
+    default: "00000000-0000-0000-0000-000000000000",
     required: true
   },
   modifiedByDepartment: {
     type: String
   }
-})
+});
 
-const Templates = mongoose.model('Templates', templateSchema)
+const Templates = mongoose.model("Templates", templateSchema);
 
-module.exports = Templates
+module.exports = Templates;
