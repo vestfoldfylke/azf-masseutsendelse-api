@@ -115,24 +115,24 @@ const getReadyDispatchesV2 = async (_req, context) => {
   await getDb();
 
   // Find all dispatches
-  logger.info("Looking for jobs to handle");
+  logger.info("Looking for approved dispatches to handle");
   const d = await Dispatches.findOne({ status: "approved" });
   if (d === null) {
-    logger.info("No jobs found");
-    return response("No jobs found");
+    logger.info("No approved dispatches found");
+    return response("No approved dispatches found");
   }
 
   const dispatches = [];
   dispatches.push(await d);
   if (dispatches.length === 0) {
-    logger.info("No jobs found");
-    return response("No jobs found");
+    logger.info("No approved dispatches found");
+    return response("No approved dispatches found");
   }
 
   // Loop through all dispatches
   for (const dispatch of dispatches) {
     // Validate if the dispatch is ready
-    logger.info("Found a job to handle, checking if it has passed the registration threshold");
+    logger.info("Found an approved dispatch to handle, checking if it has passed the registration threshold");
     if (!dispatch.approvedTimestamp) continue;
 
     // Check if the dispatch has passed the registration threshold
