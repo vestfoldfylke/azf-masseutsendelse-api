@@ -59,8 +59,12 @@ module.exports = async (authHeader) => {
     throw new HTTPError(response.status, "Not able to contact graph");
   }
 
-  const data = await response.json();
-  validatedToken.department = data?.department;
+  if (validatedToken.upn && MS.AZUREAD_SKIP_DEPARTMENT_CHECK.includes(validatedToken.upn.toLowerCase())) {
+    validatedToken.department = MS.AZUREAD_SKIP_DEPARTMENT_NAME;
+  } else {
+    const data = await response.json();
+    validatedToken.department = data?.department;
+  }
 
   if (!validatedToken.department) {
     logger.error("Could not find the company department in the authentication token for UPN {UPN}", validatedToken.upn);
