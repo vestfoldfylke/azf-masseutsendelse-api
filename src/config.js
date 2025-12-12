@@ -33,6 +33,8 @@ module.exports = {
   },
   MS: {
     AZUREAD_ALLOWEDGROUPS: process.env.AZUREAD_ALLOWEDGROUPS,
+    AZUREAD_SKIP_DEPARTMENT_CHECK: process.env.AZUREAD_SKIP_DEPARTMENT_CHECK?.toLowerCase().split(",") || [],
+    AZUREAD_SKIP_DEPARTMENT_NAME: process.env.AZUREAD_SKIP_DEPARTMENT_NAME || "Kode-Kæll",
     TEAMS_ALERTS_WEBHOOK_URL: process.env.TEAMS_ALERTS_WEBHOOK_URL
   },
   MISC: {
