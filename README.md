@@ -17,33 +17,34 @@ API used to by masseutsendelse-web to communicate with various systems and APIs.
 
 ## Environment variables
 
-| Variable                      | Description                                                    | Example                                                                                                          |
-|-------------------------------|----------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
-| MONGODB_CONNECTIONSTRING      | The connecting string for a MongoDB database                   | mongodb+srv://**[account]**:**[password]**@[clustername]/masseutsendelse?retryWrites=true&w=majority             |
-| AZURE_BLOB_CONNECTIONSTRING   | The connectionstring for Azure Storage account blob            | DefaultEndpointsProtocol=https;AccountName=[AccountName];AccountKey=[AccountKey];EndpointSuffix=core.windows.net |
-| AZURE_BLOB_CONTAINERNAME      | The container name of the blob storage                         | blobs                                                                                                            |
-| AZUREAD_JWK_URI               | JWT signing keys url                                           | https://login.microsoftonline.com/**[TenantId]**/discovery/v2.0/keys"                                            |
-| AZUREAD_ISSUER_URI            | URL for the JWT issuer                                         | https://sts.windows.net/**[TenantId]**/                                                                          |
-| AZUREAD_CLIENTID              | The Azure application id                                       | https://**[url]**/.**[domain]**/api                                                                              |
-| AZUREAD_ALLOWEDGROUPS         | Comma separated list of group object ids                       | bf9f0fb9-47c8-474d-be11-354a41a9f16f, b519ee09-6259-4459-8ead-a3e7afaaf018                                       |
-| AZUREAD_SKIP_DEPARTMENT_CHECK | Comma separated list of user upn's to skip department check    | bjarne.betjent@sesamstasjon.no,o.tidemann@sesamstasjon.no                                                        |
-| AZUREAD_SKIP_DEPARTMENT_NAME  | The department name to use for users skipping department check | Sesam stasjon                                                                                                    |
-| AZURE_CLIENT_ID               | The Azure application id for service to service auth           | guid                                                                                                             |
-| AZURE_CLIENT_SECRET           | The Azure application secret for service to service auth       | secret                                                                                                           |
-| AZURE_TENANT_ID               | The Azure tenant id for service to service auth                | guid                                                                                                             |
-| APIKEYS                       | Any API key(s) you want to be valid                            | APIKey                                                                                                           |
-| MATRIKKEL_BASEURL             | The baseurl for the MatrikkelProxyAPI                          | https://**[url]**/.**[domain]**/api                                                                              |
-| MATRIKKEL_SCOPE               | Matrikkel scope                                                | [scope]                                                                                                          |
-| PDFGENERATOR_ENDPOINT         | The endpoint url for azf-pdfgenerator v2 endpoint              |                                                                                                                  |
-| PDFGENERATOR_X_FUNCTIONS_KEY  | Auth key                                                       | [Key]                                                                                                            |
-| STATISTICS_URL                | The endpoint url for statistics api                            | https://**[url]**/.**[domain]**/api                                                                              |
-| STATISTICS_KEY                | Auth key                                                       | [Key]                                                                                                            |
-| ARCHIVE_URL                   | azf-archive endpoint                                           | https://**[url]**/.**[domain]**/api                                                                              |
-| ARCHIVE_SCOPE                 | Archive scope                                                  | [scope]                                                                                                          |
-| ARCHIVE_SHOW_DISPATCH_URL     | URL to show the dispatch in archive system                     | https://archive.endpoint.url/                                                                                    |
-| TEAMS_ALERTS_WEBHOOK_URL      | Webhook for teams alerts                                       | [webhook]                                                                                                        |
-| GRAPH_SCOPE                   | Graph scope                                                    | https://graph.microsoft.com/.default                                                                             |
-| GRAPH_URL                     | Graph url                                                      | https://graph.microsoft.com/v1.0                                                                                 |
+| Variable                       | Description                                                                                                   | Example                                                                                                          |
+|--------------------------------|---------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
+| MONGODB_CONNECTIONSTRING       | The connecting string for a MongoDB database                                                                  | mongodb+srv://**[account]**:**[password]**@[clustername]/masseutsendelse?retryWrites=true&w=majority             |
+| AZURE_BLOB_CONNECTIONSTRING    | The connectionstring for Azure Storage account blob                                                           | DefaultEndpointsProtocol=https;AccountName=[AccountName];AccountKey=[AccountKey];EndpointSuffix=core.windows.net |
+| AZURE_BLOB_CONTAINERNAME       | The container name of the blob storage                                                                        | blobs                                                                                                            |
+| AZUREAD_JWK_URI                | JWT signing keys url                                                                                          | https://login.microsoftonline.com/**[TenantId]**/discovery/v2.0/keys"                                            |
+| AZUREAD_ISSUER_URI             | URL for the JWT issuer                                                                                        | https://sts.windows.net/**[TenantId]**/                                                                          |
+| AZUREAD_CLIENTID               | The Azure application id                                                                                      | https://**[url]**/.**[domain]**/api                                                                              |
+| AZUREAD_ALLOWEDGROUPS          | Comma separated list of group object ids                                                                      | bf9f0fb9-47c8-474d-be11-354a41a9f16f, b519ee09-6259-4459-8ead-a3e7afaaf018                                       |
+| AZUREAD_SKIP_DEPARTMENT_CHECK  | Comma separated list of user upn's to skip department check                                                   | bjarne.betjent@sesamstasjon.no,o.tidemann@sesamstasjon.no                                                        |
+| AZUREAD_SKIP_DEPARTMENT_NAME   | The department name to use for users skipping department check                                                | Sesam stasjon                                                                                                    |
+| AZURE_CLIENT_ID                | The Azure application id for service to service auth                                                          | guid                                                                                                             |
+| AZURE_CLIENT_SECRET            | The Azure application secret for service to service auth                                                      | secret                                                                                                           |
+| AZURE_TENANT_ID                | The Azure tenant id for service to service auth                                                               | guid                                                                                                             |
+| APIKEYS                        | Any API key(s) you want to be valid                                                                           | APIKey                                                                                                           |
+| MATRIKKEL_BASEURL              | The baseurl for the MatrikkelProxyAPI                                                                         | https://**[url]**/.**[domain]**/api                                                                              |
+| MATRIKKEL_SCOPE                | Matrikkel scope                                                                                               | [scope]                                                                                                          |
+| PDFGENERATOR_ENDPOINT          | The endpoint url for azf-pdfgenerator v2 endpoint                                                             |                                                                                                                  |
+| PDFGENERATOR_X_FUNCTIONS_KEY   | Auth key                                                                                                      | [Key]                                                                                                            |
+| STATISTICS_URL                 | The endpoint url for statistics api                                                                           | https://**[url]**/.**[domain]**/api                                                                              |
+| STATISTICS_KEY                 | Auth key                                                                                                      | [Key]                                                                                                            |
+| ARCHIVE_URL                    | azf-archive endpoint                                                                                          | https://**[url]**/.**[domain]**/api                                                                              |
+| ARCHIVE_SCOPE                  | Archive scope                                                                                                 | [scope]                                                                                                          |
+| ARCHIVE_SHOW_DISPATCH_URL      | URL to show the dispatch in archive system                                                                    | https://archive.endpoint.url/                                                                                    |
+| TEAMS_ALERTS_WEBHOOK_URL       | Webhook for teams alerts                                                                                      | [webhook]                                                                                                        |
+| GRAPH_SCOPE                    | Graph scope                                                                                                   | https://graph.microsoft.com/.default                                                                             |
+| GRAPH_URL                      | Graph url                                                                                                     | https://graph.microsoft.com/v1.0                                                                                 |
+| BYPASS_REGISTRATION_THRESHOLD  | Set to true to allow dispatching same day as creation, set to false or omit to enforce registration threshold | true                                                                                                             |
 
 
 ## Endpoints GET
@@ -58,7 +59,7 @@ Will return the dispatch object with the id provided. It will only return one si
 
 ### Example dispatches & dispatches /{id}
 
-```json
+```json5
 [
     {
         "stats": {
@@ -200,7 +201,7 @@ For documentation on E18:
  - https://github.com/vtfk/E18-api
  
 ### Example readyDisptaches
-```json
+```json5
 [
     {
         "_id": "620f639ad96d2f1ef80e6fd6",
@@ -313,7 +314,7 @@ For documentation on the azure-blob-client:
 
 ### Example /blobs/{id}/{name}
 
-```json
+```json5
 {
   "name": "Mail.msg",
   "path": "620fa95b909f461cacf5adf2/Mail.msg", //Path used to locate the requested file, /{id}/{name}
@@ -437,7 +438,7 @@ This endpoint is used to post a new dispatch object to the mongoDB.
 
 ### Example /dispatches
 
-```json
+```json5
 
 {
    "title": "Demo",
@@ -1142,7 +1143,7 @@ This endpoint is used to post a new template to the mongoDB
 
 ### Example /templates
 
-```json
+```json5
 {
     "name": "Demo",
     "description": "Brukes om det skal utføres en demo",

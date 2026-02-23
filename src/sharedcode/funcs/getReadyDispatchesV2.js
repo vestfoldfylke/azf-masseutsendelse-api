@@ -132,8 +132,11 @@ const getReadyDispatchesV2 = async (_req, context) => {
   // Loop through all dispatches
   for (const dispatch of dispatches) {
     // Validate if the dispatch is ready
+    if (!dispatch.approvedTimestamp) {
+      continue;
+    }
+
     logger.info("Found an approved dispatch to handle, checking if it has passed the registration threshold");
-    if (!dispatch.approvedTimestamp) continue;
 
     // Check if the dispatch has passed the registration threshold
     const registrationThreshold = dayjs(dispatch.approvedTimestamp).set("hour", 23).set("minute", 59).set("second", 59).set("millisecond", 0);
@@ -142,7 +145,12 @@ const getReadyDispatchesV2 = async (_req, context) => {
     // If true, registration threshold check will be skipped and jobs will be created.
     if (!MISC.BYPASS_REGISTRATION_THRESHOLD) {
       logger.info("Checking registration threshold, will create job if it is passed.");
-      if (dayjs(new Date()).isBefore(registrationThreshold)) continue;
+      if (dayjs(new Date()).isBefore(registrationThreshold)) {
+        logger.info("Registration threshold not passed. Job will not be created at this time");
+        continue;
+      }
+    } else {
+      logger.warn("Bypass registration threshold is enabled, jobs will be created for all approved dispatches regardless of the registration threshold");
     }
 
     // Variables

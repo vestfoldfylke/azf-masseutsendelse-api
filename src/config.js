@@ -38,7 +38,7 @@ module.exports = {
     TEAMS_ALERTS_WEBHOOK_URL: process.env.TEAMS_ALERTS_WEBHOOK_URL
   },
   MISC: {
-    BYPASS_REGISTRATION_THRESHOLD: process.env.BYPASS_REGISTRATION_THRESHOLD || true
+    BYPASS_REGISTRATION_THRESHOLD: process.env.BYPASS_REGISTRATION_THRESHOLD?.toLowerCase().trim() === "true"
   }
 
   // APIKEYS: process.env.APIKEYS,

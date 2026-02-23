@@ -23,6 +23,8 @@ const alertTeams = async (error, color, failedTask, completedJob, jobId, endpoin
 
   color = color === "error" ? "a80c0c" : "1ea80c";
 
+  const environment = process.env.NODE_ENV || process.env.APP_NAME || "";
+
   const teamsMsg = {
     type: "message",
     attachments: [
@@ -37,7 +39,7 @@ const alertTeams = async (error, color, failedTask, completedJob, jobId, endpoin
           body: [
             {
               type: "TextBlock",
-              text: color === "a80c0c" ? "azf-masseutsendelse-api failed" : "azf-masseutsendelse-api finished a job",
+              text: color === "a80c0c" ? `azf-masseutsendelse-api failed ${environment ? `- ${environment}` : ""}` : `azf-masseutsendelse-api finished a job ${environment ? `- ${environment}` : ""}`,
               wrap: true,
               style: "heading",
               color
