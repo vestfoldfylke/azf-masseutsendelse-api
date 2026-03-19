@@ -1,6 +1,6 @@
 {
 	"name": "test-func-masseutsendelse",
-	"version": "1.1.1",
+	"version": "1.1.2",
 	"description": "",
 	"scripts": {
 		"lint": "biome check",
@@ -18,7 +18,7 @@
 		"@azure/identity": "^4.13.0",
 		"@azure/storage-blob": "^12.31.0",
 		"@shelf/jest-mongodb": "^6.0.2",
-		"@vestfoldfylke/loglady": "^1.5.0",
+		"@vestfoldfylke/loglady": "^1.5.2",
 		"@vtfk/azure-blob-client": "^0.1.7",
 		"azure-ad-verify-token": "^1.1.2",
 		"dayjs": "^1.11.19",
