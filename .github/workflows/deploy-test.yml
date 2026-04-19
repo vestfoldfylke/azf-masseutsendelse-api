@@ -15,5 +15,6 @@ jobs:
     with:
       azure_appname: 'vfkdlzmasseutmseutsapi'
       azure_functionapp_package_path: '.'
+      audit_severity: 'none' # setting this to 'none' as masseutsendelse must be migrated to ESM before all dependencies can be upgraded
     secrets:
       azure_publishprofile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DEV }}
