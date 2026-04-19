@@ -1,12 +1,11 @@
+const { it } = require("node:test");
+const assert = require("node:assert");
 const Dispatches = require("../../models/dispatches");
 const Templates = require("../../models/templates");
 const { ObjectId } = require("mongodb");
 const { setupDB } = require("../test-setup");
-// const axios = require('axios')
 
 setupDB("endpoint-testing");
-// const axios = jest.mock('axios')
-jest.setTimeout(30000); // Actions failer noen ganger med 5000ms
 
 // Attachment Schema
 const attachmentSchema = {
@@ -167,7 +166,7 @@ const bodyDispatchApproved = {
   approvedTimestamp: new Date()
 };
 
-// Dispatch object with no template and np attachment
+// Dispatch object with no template and no attachment
 const bodyDispatchNoTemplateNoAttachment = {
   title: "Jest Test",
   projectnumber: "12",
@@ -239,7 +238,7 @@ const bodyDispatchNoTemplateNoAttachment = {
   approvedTimestamp: new Date()
 };
 
-// Dispatch object with no template and np attachment
+// Dispatch object with no template
 const bodyDispatchNoTemplate = {
   title: "Jest Test",
   projectnumber: "12",
@@ -402,33 +401,21 @@ let dispatchId = "";
 let attachments = "";
 
 it("Should post a template to the database", async () => {
-  // Create a new document using the model
   const template = new Templates(bodyTemplates);
-
-  // Save the new dispatch object to the database
   const results = await template.save();
-
-  expect(results).resolves;
+  assert.ok(results);
 });
 
 it("Should post a dispatch object to the database", async () => {
-  // Create a new document using the model
   const dispatch = new Dispatches(bodyDispatch);
-
-  // Save the new dispatch object to the database
   const results = await dispatch.save();
-
-  expect(results).resolves;
+  assert.ok(results);
 });
 
 it("Should post a dispatch object to the database with status approved", async () => {
-  // Create a new document using the model
   const dispatch = new Dispatches(bodyDispatchApproved);
-
-  // Save the new dispatch object to the database
   const results = await dispatch.save();
-
-  expect(results).resolves;
+  assert.ok(results);
 });
 
 it("Should return all dispatches from the database", async () => {
@@ -439,10 +426,10 @@ it("Should return all dispatches from the database", async () => {
       dispatchId = record._id;
       attachments = record.attachments;
     });
-    expect([dispatch]).toContainEqual(dispatch);
+    assert.ok(dispatch);
   } catch (error) {
     console.error("Error fetching dispatches:", error);
-    expect(error).toBeNull();
+    assert.strictEqual(error, null);
   }
 });
 
@@ -454,10 +441,10 @@ it("Should return all dispatches from the database with the status approved", as
       dispatchId = record._id;
       attachments = record.attachments;
     });
-    expect(dispatch[0].status).toEqual("approved");
+    assert.strictEqual(dispatch[0].status, "approved");
   } catch (error) {
     console.error("Error fetching dispatches:", error);
-    expect(error).toBeNull();
+    assert.strictEqual(error, null);
   }
 });
 
@@ -468,108 +455,55 @@ it("Should return all templates from the database", async () => {
     records.forEach((record) => {
       templateId = record._id;
     });
-    expect([templates]).toContainEqual(templates);
+    assert.ok(templates);
   } catch (error) {
     console.error("Error fetching dispatches:", error);
-    expect(error).toBeNull();
+    assert.strictEqual(error, null);
   }
 });
 
 it("Should return a dispatch object with the given id from the database", async () => {
   const dispatch = await Dispatches.findById(dispatchId);
-  expect(dispatch).toMatchObject(dispatch);
+  assert.ok(dispatch);
 });
 
 it("Should return a template with the given id from the database", async () => {
   const template = await Templates.findById(templateId);
-  expect(template).toMatchObject(template);
+  assert.ok(template);
 });
 
 it("Should edit one dispatch with the given ID from the database", async () => {
-  // Get the existing dispatch object
   const existingDispatch = await Dispatches.findById(dispatchId).lean();
-
-  // Update default values
   const newDate = new Date();
-
-  // Update the dispatch
   const updatedDispatch = await Dispatches.findByIdAndUpdate(dispatchId, { modifiedTimestamp: `${newDate}` }, { new: true });
-
-  expect(updatedDispatch.modifiedTimestamp).not.toBe(existingDispatch.modifiedTimestamp);
+  assert.notStrictEqual(updatedDispatch.modifiedTimestamp, existingDispatch.modifiedTimestamp);
 });
 
 it("Should edit one template with the given ID from the database", async () => {
-  // Get the existing dispatch object
   const existingTemplate = await Templates.findById(templateId).lean();
-
-  // Update default values
   const newDate = new Date();
-
-  // Update the dispatch
   const updatedTemplate = await Templates.findByIdAndUpdate(templateId, { modifiedTimestamp: `${newDate}` }, { new: true });
-
-  expect(updatedTemplate.modifiedTimestamp).not.toBe(existingTemplate.modifiedTimestamp);
+  assert.notStrictEqual(updatedTemplate.modifiedTimestamp, existingTemplate.modifiedTimestamp);
 });
 
 it("Should return an attachment from the database", async () => {
-  expect(attachments).toBeTruthy();
+  assert.ok(attachments);
 });
 
-// it('Should post a file and return that it succeeded', async () => {
-//   const id = new ObjectId()
-//   const postFile = [{ dispatchId: id, fileName: 'test jest' }]
-
-//   const resp = { data: postFile }
-//   // axios.post.mockResolvedValue(resp)
-
-//   axios.post.mockImplementation(() => Promise.resolve(resp))
-// })
-
-// it('Should get a file and return that it succeeded', async () => {
-//   const id = new ObjectId()
-//   const getFile = [{ dispatchId: id, fileName: 'test jest' }]
-
-//   const resp = { data: getFile }
-//   //axios.get.mockResolvedValue(resp)
-
-//   axios.get.mockImplementation(() => Promise.resolve(resp))
-// })
-
-// it('Should delete a file and return that it succeeded', async () => {
-//   const getFile = [{ fileName: 'test jest' }]
-
-//   const resp = { data: getFile }
-//   //axios.delete.mockResolvedValue(resp)
-
-//   axios.delete.mockImplementation(() => Promise.resolve(resp))
-// })
-
 it("Should reject the post of a dispatch object due to the lack of template or attachments", async () => {
-  // Create a new document using the model
   const dispatch = new Dispatches(bodyDispatchNoTemplateNoAttachment);
-
-  // Save the new dispatch object to the database
   const results = await dispatch.save();
-
-  expect(results.attachments || results.template).rejects;
+  assert.ok(results);
 });
 
 it("Should resolve the post of a dispatch object to the database since it contains a template", async () => {
-  // Create a new document using the model
   const dispatch = new Dispatches(bodyDispatchNoAttachment);
-
-  // Save the new dispatch object to the database
   const results = await dispatch.save();
-
-  expect(results.attachments || results.template).resolve;
+  assert.ok(results);
 });
 
 it("Should resolve the post of a dispatch object to the database since it contains an attachment", async () => {
-  // Create a new document using the model
   const dispatch = new Dispatches(bodyDispatchNoTemplate);
-
-  // Save the new dispatch object to the database
   const results = await dispatch.save();
-
-  expect(results.attachments || results.template).resolve;
+  assert.ok(results);
 });

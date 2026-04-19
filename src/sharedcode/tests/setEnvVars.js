@@ -1,4 +1,5 @@
-// Variabler som kun blir brukt i jest test.
+// Variabler som kun blir brukt i test.
+process.env.NODE_ENV = "test";
 process.env.MONGODB_ATLAS = process.env.URI;
 process.env.APIKEYS_TEST = "En Lama";
 process.env.AZURE_BLOB_CONNECTIONSTRING_TEST = "Med sandaler";
