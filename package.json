@@ -1,32 +1,29 @@
 {
 	"name": "test-func-masseutsendelse",
-	"version": "1.1.2",
+	"version": "1.1.3",
 	"description": "",
 	"scripts": {
 		"lint": "biome check",
 		"lint:fix": "biome check --write",
 		"start": "func start",
-		"test:jest": "jest",
-		"test": "npm run lint && jest"
+		"test": "npm run lint && node --require ./src/sharedcode/tests/setEnvVars.js --test src/sharedcode/tests/**/*.test.js"
 	},
 	"engines": {
 		"node": ">=18"
 	},
 	"main": "src/functions/*.js",
 	"dependencies": {
-		"@azure/functions": "^4.11.2",
+		"@azure/functions": "^4.12.0",
 		"@azure/identity": "^4.13.1",
 		"@azure/storage-blob": "^12.31.0",
-		"@shelf/jest-mongodb": "^6.0.2",
-		"@vestfoldfylke/loglady": "^1.5.2",
-		"@vtfk/azure-blob-client": "^0.1.7",
+		"@vestfoldfylke/loglady": "^1.5.3",
+		"@vtfk/azure-blob-client": "^0.2.0",
 		"azure-ad-verify-token": "^1.1.2",
 		"dayjs": "^1.11.20",
-		"mongoose": "^9.3.1"
+		"mongoose": "^9.4.1"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.4.8",
-		"jest": "^30.3.0",
+		"@biomejs/biome": "2.4.12",
 		"mongodb-memory-server": "^11.0.1",
 		"msw": "^1.3.2"
 	},

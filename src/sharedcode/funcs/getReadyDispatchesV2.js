@@ -82,7 +82,7 @@ const retrieveAttachments = async (dispatch) => {
     const file = await blobClient.get(`${dispatch._id}/${attachment.name}`);
 
     // Validate the files
-    if (!file || !file.data || file.data.length === 0) {
+    if (!file?.data || file.data.length === 0) {
       logger.error("No files found, check if you passed the right filename and/or the right dispatchId");
       throw new HTTPError(404, "No files found, check if you passed the right filename and/or the right dispatchId");
     }
